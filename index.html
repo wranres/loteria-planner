@@ -19,18 +19,60 @@
       align-items: center;
       background: radial-gradient(circle at top, #4f46e5, #111827);
       color: #f9fafb;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* Tema claro */
+    body.light-theme {
+      background: radial-gradient(circle at top, #e5e7eb, #c7d2fe);
+      color: #0f172a;
+    }
+    body.light-theme .app {
+      background: rgba(249, 250, 251, 0.98);
+      color: #0f172a;
+    }
+    body.light-theme .main-card {
+      background: #f9fafb;
+      border-color: #e5e7eb;
+    }
+    body.light-theme .lifeline-bar {
+      background: #e5e7eb;
+      border-color: #d1d5db;
+    }
+    body.light-theme .lifeline-btn {
+      background: #f9fafb;
+      border-color: #d1d5db;
+      color: #111827;
+    }
+    body.light-theme .lifeline-btn:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+    body.light-theme .top-bar {
+      background: linear-gradient(to right, #3b82f6, #a855f7);
+      color: #f9fafb;
+    }
+    body.light-theme .bottom-footer {
+      color: #111827;
+    }
+    body.light-theme .option-btn {
+      background: #f9fafb;
+      color: #111827;
+      border-color: #e5e7eb;
+    }
+    body.light-theme .option-btn:hover {
+      background: #e5e7eb;
     }
 
     .app {
       width: 100%;
-      max-width: 480px;
-      min-height: 92vh;
+      max-width: 520px;
+      min-height: 95vh;
       border-radius: 24px;
       background: rgba(3, 7, 18, 0.96);
       padding: 0;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7);
       position: relative;
       overflow: hidden;
     }
@@ -51,7 +93,7 @@
       top: -60%;
       left: -60%;
       z-index: -1;
-      animation: spin 20s linear infinite;
+      animation: spin 22s linear infinite;
     }
 
     @keyframes spin {
@@ -68,7 +110,7 @@
       height: 100%;
     }
 
-    /* Barra superior tipo Preguntados */
+    /* Barra superior */
     .top-bar {
       background: linear-gradient(to right, #facc15, #f97316);
       color: #111827;
@@ -86,33 +128,39 @@
     }
 
     .top-title {
-      font-weight: 800;
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
+      font-weight: 900;
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
     }
 
     .top-subtitle {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       opacity: 0.9;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .top-badges {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
     }
 
     .circle-icon {
-      width: 26px;
-      height: 26px;
+      width: 30px;
+      height: 30px;
       border-radius: 999px;
       background: #fefce8;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 0.75rem;
+      font-size: 1.1rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
@@ -126,11 +174,11 @@
     }
 
     .status-pill span.icon {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
     .timer {
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .timer-warning {
@@ -144,9 +192,22 @@
       100% { transform: scale(1); }
     }
 
+    .theme-toggle-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0,0,0,0.15);
+      color: inherit;
+    }
+
     .content-area {
       flex: 1;
-      padding: 12px 14px 8px;
+      padding: 10px 14px 6px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -156,20 +217,20 @@
       flex: 1;
       background: #020617;
       border-radius: 22px;
-      padding: 14px;
+      padding: 16px;
       border: 1px solid #111827;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 8px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+      gap: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
     }
 
     .category-label {
       align-self: flex-start;
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.16em;
       padding: 4px 10px;
       border-radius: 999px;
       background: #1d4ed8;
@@ -179,53 +240,53 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .question-number {
-      font-size: 0.8rem;
-      opacity: 0.85;
+      font-size: 0.9rem;
+      opacity: 0.9;
     }
 
     .streak-pill {
-      font-size: 0.8rem;
-      padding: 3px 8px;
+      font-size: 0.9rem;
+      padding: 3px 10px;
       border-radius: 999px;
       background: #022c22;
       color: #bbf7d0;
     }
 
     .question-text {
-      font-size: 1rem;
-      line-height: 1.4;
-      margin-top: 6px;
+      font-size: 1.15rem;
+      line-height: 1.5;
+      margin-top: 8px;
     }
 
     .subtitle {
-      font-size: 0.9rem;
+      font-size: 1rem;
       text-align: center;
-      opacity: 0.85;
-      margin-top: 6px;
+      opacity: 0.9;
+      margin-top: 8px;
     }
 
     .center-container {
       display: flex;
       justify-content: center;
-      margin-top: 14px;
+      margin-top: 16px;
     }
 
     .lottery-btn {
-      width: 190px;
-      height: 190px;
+      width: 210px;
+      height: 210px;
       border-radius: 999px;
       border: none;
       background: radial-gradient(circle at 30% 10%, #fef3c7, #f97316);
       color: #111827;
-      font-weight: 800;
-      font-size: 1.3rem;
-      letter-spacing: 0.08em;
+      font-weight: 900;
+      font-size: 1.4rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      box-shadow: 0 18px 32px rgba(248, 181, 0, 0.6);
+      box-shadow: 0 22px 40px rgba(248, 181, 0, 0.7);
       cursor: pointer;
       transition: transform 0.14s, box-shadow 0.14s, filter 0.2s;
       position: relative;
@@ -236,37 +297,37 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 20% 0%, #ffffff77, transparent 55%);
+      background: radial-gradient(circle at 20% 0%, #ffffff88, transparent 55%);
       opacity: 0.9;
       mix-blend-mode: soft-light;
     }
 
     .lottery-btn:hover {
-      transform: translateY(-3px) scale(1.02);
+      transform: translateY(-4px) scale(1.02);
       filter: brightness(1.05);
-      box-shadow: 0 24px 40px rgba(248, 181, 0, 0.7);
+      box-shadow: 0 26px 48px rgba(248, 181, 0, 0.9);
     }
 
     .lottery-btn:active {
-      transform: translateY(1px) scale(0.98);
-      box-shadow: 0 10px 20px rgba(248, 181, 0, 0.5);
+      transform: translateY(1px) scale(0.97);
+      box-shadow: 0 12px 24px rgba(248, 181, 0, 0.6);
     }
 
     .options {
-      margin-top: 12px;
+      margin-top: 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .option-btn {
       border: none;
       border-radius: 999px;
-      padding: 10px 14px;
+      padding: 12px 16px;
       background: #020617;
       color: #f9fafb;
       text-align: left;
-      font-size: 0.9rem;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -276,27 +337,30 @@
     }
 
     .option-btn span.index {
-      font-weight: 600;
+      font-weight: 700;
       margin-right: 8px;
-      opacity: 0.8;
+      opacity: 0.85;
+      font-size: 1.05rem;
     }
 
     .option-btn:hover {
       transform: translateY(-1px);
       background: #02091f;
-      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.8);
+      box-shadow: 0 4px 11px rgba(15, 23, 42, 0.9);
     }
 
     .option-btn.correct {
       background: #16a34a;
       border-color: #22c55e;
       color: #ecfdf3;
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.8);
     }
 
     .option-btn.wrong {
       background: #b91c1c;
       border-color: #fecaca;
       color: #fee2e2;
+      box-shadow: 0 4px 14px rgba(185, 28, 28, 0.8);
     }
 
     .option-btn.eliminated {
@@ -308,8 +372,8 @@
     .secondary-btn {
       border-radius: 999px;
       border: none;
-      padding: 9px 16px;
-      font-size: 0.9rem;
+      padding: 10px 18px;
+      font-size: 0.95rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -321,7 +385,7 @@
     .primary-btn {
       background: #22c55e;
       color: #022c22;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .secondary-btn {
@@ -336,49 +400,48 @@
       cursor: default;
     }
 
-    .pill-small {
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      background: #111827;
-      color: #e5e7eb;
-    }
-
     .feedback-title {
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       text-align: center;
     }
 
     .feedback-body {
-      font-size: 0.9rem;
+      font-size: 1rem;
       opacity: 0.95;
       text-align: left;
     }
 
     .result-text {
-      font-size: 1.2rem;
-      font-weight: 700;
+      font-size: 1.6rem;
+      font-weight: 900;
       text-align: center;
       margin-top: 8px;
     }
 
-    .badge-win {
-      background: linear-gradient(to right, #22c55e, #a3e635);
-      -webkit-background-clip: text;
-      color: transparent;
-      font-weight: 800;
+    .win-bounce {
+      display: inline-block;
+      animation: bounce-colors 2.2s infinite;
     }
 
-    .badge-lose {
-      color: #f97316;
-      font-weight: 700;
+    @keyframes bounce-colors {
+      0%   { transform: translateX(-10%) translateY(0) scale(1); color: #22c55e; }
+      25%  { transform: translateX(10%) translateY(-10px) scale(1.1); color: #facc15; }
+      50%  { transform: translateX(-5%) translateY(0) scale(1); color: #38bdf8; }
+      75%  { transform: translateX(5%) translateY(-12px) scale(1.12); color: #f97316; }
+      100% { transform: translateX(0) translateY(0) scale(1); color: #22c55e; }
     }
 
-    /* Barra de comodines */
+    .subtitle-small {
+      font-size: 0.95rem;
+      text-align: center;
+      opacity: 0.9;
+      margin-top: 8px;
+    }
+
     .lifeline-bar {
-      margin-top: 10px;
+      margin-top: 6px;
       padding: 8px 10px;
       background: #020617;
       border-radius: 999px;
@@ -387,15 +450,15 @@
       align-items: center;
       justify-content: space-around;
       gap: 6px;
-      font-size: 0.78rem;
+      font-size: 0.85rem;
     }
 
     .lifeline-btn {
       flex: 1;
       border-radius: 999px;
       border: none;
-      padding: 6px 6px;
-      font-size: 0.75rem;
+      padding: 8px 8px;
+      font-size: 0.8rem;
       cursor: pointer;
       background: #0b1120;
       color: #e5e7eb;
@@ -408,13 +471,13 @@
     }
 
     .lifeline-btn span.icon {
-      font-size: 1rem;
+      font-size: 1.1rem;
     }
 
     .lifeline-btn:hover:not(:disabled) {
       background: #020617;
       transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(15,23,42,0.7);
+      box-shadow: 0 3px 8px rgba(15,23,42,0.8);
     }
 
     .lifeline-btn:disabled {
@@ -423,13 +486,14 @@
     }
 
     .bottom-footer {
-      padding: 6px 14px 10px;
+      padding: 6px 16px 10px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      font-size: 0.78rem;
-      opacity: 0.9;
+      font-size: 0.9rem;
       color: #e5e7eb;
+      font-style: italic;
+      font-weight: 600;
     }
 
     .app-win .main-card {
@@ -446,10 +510,38 @@
       display: none !important;
     }
 
+    /* Overlay de cuenta regresiva grande */
+    #countdownOverlay {
+      position: absolute;
+      left: 50%;
+      bottom: 20%;
+      transform: translateX(-50%);
+      font-size: 4rem;
+      font-weight: 900;
+      color: #ef4444;
+      text-shadow: 0 0 20px rgba(0,0,0,0.8);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #countdownOverlay.show {
+      animation: countdown-pop 0.6s forwards;
+    }
+
+    @keyframes countdown-pop {
+      0%   { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.9); }
+      20%  { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.1); }
+      80%  { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.9); }
+    }
+
     @media (max-width: 480px) {
       .app {
         border-radius: 0;
         min-height: 100vh;
+      }
+      #countdownOverlay {
+        font-size: 3.2rem;
       }
     }
   </style>
@@ -457,21 +549,30 @@
 <body>
   <div class="app" id="appRoot">
     <div class="app-inner">
+      <!-- Overlay cuenta regresiva grande -->
+      <div id="countdownOverlay"></div>
+
       <!-- Barra superior -->
       <div class="top-bar">
         <div class="top-left">
           <div class="top-title">PLANNER · LEXIN</div>
-          <div class="top-subtitle">Preguntas y retos básicos para empezar a usar Planner.</div>
+          <div class="top-subtitle">Trivias y retos para empezar a usar Planner en equipo.</div>
         </div>
-        <div class="top-badges">
-          <div class="circle-icon">🎯</div>
-          <div class="status-pill">
-            <span class="icon">✅</span>
-            <span id="progressText">0 / 3</span>
-          </div>
-          <div class="status-pill">
-            <span class="icon">⏱️</span>
-            <span class="timer" id="timerText">00s</span>
+        <div class="top-right">
+          <button class="theme-toggle-btn" id="themeToggleBtn">
+            <span id="themeIcon">🌙</span>
+            <span id="themeLabel">Oscuro</span>
+          </button>
+          <div class="top-badges">
+            <div class="circle-icon">🎲</div>
+            <div class="status-pill">
+              <span class="icon">✅</span>
+              <span id="progressText">0 / 3</span>
+            </div>
+            <div class="status-pill">
+              <span class="icon">⏱️</span>
+              <span class="timer" id="timerText">00s</span>
+            </div>
           </div>
         </div>
       </div>
@@ -484,7 +585,7 @@
             <p class="subtitle">
               Toca el botón <strong>Lotería</strong> para iniciar una ronda de
               <strong>3 participaciones</strong> con preguntas y retos sobre Planner.
-              Usa los comodines si te atoras, como en Preguntados.
+              Usa los comodines como en Preguntados.
             </p>
             <div class="center-container">
               <button class="lottery-btn" id="startButton">
@@ -524,7 +625,7 @@
             <div id="feedbackArea" class="hidden">
               <div class="feedback-title" id="feedbackTitle"></div>
               <p class="feedback-body" id="feedbackBody"></p>
-              <div class="center-container" style="margin-top: 14px;">
+              <div class="center-container" style="margin-top: 16px;">
                 <button class="primary-btn" id="nextItemBtn" disabled>
                   Siguiente (5)
                 </button>
@@ -535,8 +636,8 @@
           <!-- Pantalla final -->
           <div id="resultScreen" class="hidden">
             <div class="result-text" id="resultText"></div>
-            <p class="subtitle" id="resultSubtitle"></p>
-            <div class="center-container" style="margin-top: 16px; gap: 8px;">
+            <p class="subtitle-small" id="resultSubtitle"></p>
+            <div class="center-container" style="margin-top: 18px; gap: 8px;">
               <button class="secondary-btn" id="backHomeBtn">Volver al inicio</button>
               <button class="primary-btn" id="retryBtn">Otro intento</button>
             </div>
@@ -550,7 +651,7 @@
             <span>Cambiar</span>
           </button>
           <button class="lifeline-btn" id="phoneBtn">
-            <span class="icon">☎️</span>
+            <span class="icon">📞</span>
             <span>Llamar a un amigo</span>
           </button>
           <button class="lifeline-btn" id="fiftyBtn">
@@ -562,8 +663,7 @@
 
       <!-- Pie de página -->
       <div class="bottom-footer">
-        <span>Lexin · Planner Power Mode</span>
-        <span>Versión demo ampliable</span>
+        Lexin · Planner Power Mode
       </div>
     </div>
   </div>
@@ -610,8 +710,9 @@
 
     // ===============================
     // Banco de preguntas y retos (ejemplos)
+    // Para llegar a 100 preguntas y 50 retos:
+    // copia y pega más objetos siguiendo este mismo formato.
     // ===============================
-
     const questions = [
       {
         type: "question",
@@ -637,7 +738,7 @@
         ],
         correctIndex: 0,
         explanation:
-          "Para usar Planner se necesita una cuenta institucional/Office 365 que incluya la licencia de Planner y acceso al entorno de la organización."
+          "Para usar Planner se necesita una cuenta institucional/Office 365 con licencia activa y acceso al entorno de la organización."
       },
       {
         type: "question",
@@ -808,14 +909,14 @@
         explanation:
           "Lexin busca en Planner un espacio visual y compartido para organizar tareas y proyectos, asignar responsables y hacer seguimiento."
       }
-      // Aquí puedes seguir agregando más preguntas básicas
+      // 👉 A partir de aquí puedes agregar más preguntas hasta llegar a 100.
     ];
 
     const challenges = [
       {
         type: "challenge",
         text:
-          "Reto: Explica en voz alta, en menos de 20 segundos, qué es Planner y para qué lo está usando Lexin.",
+          "Reto: Explica en voz alta, en menos de 30 segundos, qué es Planner y para qué lo está usando Lexin.",
         guide:
           "Respuesta sugerida: Planner es una herramienta de Office 365 para organizar tareas y proyectos. Lexin la usa para visualizar el trabajo del equipo, asignar responsables y hacer seguimiento de sus actividades."
       },
@@ -850,25 +951,25 @@
       {
         type: "challenge",
         text:
-          "Reto: Imagina que debes enseñar Planner a un nuevo miembro de Lexin. Resume en 20 segundos cómo le explicarías el plan principal del equipo.",
+          "Reto: Imagina que debes enseñar Planner a un nuevo miembro de Lexin. Resume en 30 segundos cómo le explicarías el plan principal del equipo.",
         guide:
           "Ejemplo: 'Este es nuestro plan en Planner: vemos buckets con las fases del trabajo, tareas con responsables y fechas, y usamos colores para los tipos de actividad'."
       }
-      // Aquí puedes agregar más retos similares
+      // 👉 Agrega más retos similares hasta llegar a 50.
     ];
 
     // ===============================
     // Estado del juego
     // ===============================
     const baseTimes = {
-      question: 15,
-      challenge: 20,
+      question: 20,  // preguntas: 20s
+      challenge: 30, // retos: 30s
       phone: 30
     };
 
     const maxPerRound = 3;
     let currentItem = null;
-    let currentType = null; // "question" o "challenge"
+    let currentType = null;
     let roundCount = 0;
     let successCount = 0;
     let timerId = null;
@@ -885,10 +986,14 @@
       fifty: true
     };
 
+    let lastCountdownShown = null;
+
     // ===============================
     // Elementos DOM
     // ===============================
     const appRoot = document.getElementById("appRoot");
+    const countdownOverlay = document.getElementById("countdownOverlay");
+
     const startScreen = document.getElementById("startScreen");
     const gameScreen = document.getElementById("gameScreen");
     const resultScreen = document.getElementById("resultScreen");
@@ -918,6 +1023,33 @@
     const skipBtn = document.getElementById("skipBtn");
     const phoneBtn = document.getElementById("phoneBtn");
     const fiftyBtn = document.getElementById("fiftyBtn");
+
+    const themeToggleBtn = document.getElementById("themeToggleBtn");
+    const themeIcon = document.getElementById("themeIcon");
+    const themeLabel = document.getElementById("themeLabel");
+
+    // ===============================
+    // Tema claro / oscuro
+    // ===============================
+    let currentTheme = "dark";
+    function updateThemeVisuals() {
+      if (currentTheme === "dark") {
+        document.body.classList.remove("light-theme");
+        themeIcon.textContent = "🌙";
+        themeLabel.textContent = "Oscuro";
+      } else {
+        document.body.classList.add("light-theme");
+        themeIcon.textContent = "☀️";
+        themeLabel.textContent = "Claro";
+      }
+    }
+
+    themeToggleBtn.addEventListener("click", () => {
+      currentTheme = currentTheme === "dark" ? "light" : "dark";
+      updateThemeVisuals();
+    });
+
+    updateThemeVisuals();
 
     // ===============================
     // Navegación
@@ -955,16 +1087,16 @@
       if (won) {
         appRoot.classList.add("app-win");
         appRoot.classList.remove("app-lose");
-        resultText.innerHTML = "🎉 ¡Ganaste! <span class='badge-win'>Eres un pro en Planner</span> 🎉";
+        resultText.innerHTML = "<span class='win-bounce'>¡GANASTE!</span>";
         resultSubtitle.textContent =
-          "Completaste 3 participaciones exitosas. Sigue usando Planner con Lexin para mantener este nivel.";
+          "Completaste 3 participaciones exitosas. Lexin se está volviendo pro en Planner.";
         playWinSound();
       } else {
         appRoot.classList.add("app-lose");
         appRoot.classList.remove("app-win");
-        resultText.innerHTML = "✨ Estás casi a ser un pro en Planner ✨";
+        resultText.textContent = "Estás casi a ser un pro en Planner";
         resultSubtitle.textContent =
-          "Sigue practicando en Planner con el equipo Lexin. Cada intento te ayuda a entender mejor la herramienta.";
+          "Sigue practicando. Cada intento con esta Lotería Planner te ayuda a dominar la herramienta.";
         playLoseSound();
       }
     }
@@ -983,12 +1115,9 @@
     }
 
     function pickRandomItem(type) {
-      if (type === "question") {
-        return randomFromArray(questions);
-      } else if (type === "challenge") {
-        return randomFromArray(challenges);
-      }
-      // Mezcla 50/50 si no se especifica
+      if (type === "question") return randomFromArray(questions);
+      if (type === "challenge") return randomFromArray(challenges);
+
       const chooseQuestion = Math.random() < 0.5;
       if (chooseQuestion && questions.length > 0) {
         return randomFromArray(questions);
@@ -1010,8 +1139,6 @@
       skipBtn.disabled = !lifelines.skip;
       phoneBtn.disabled = !lifelines.phone;
       fiftyBtn.disabled = !lifelines.fifty || currentType !== "question";
-
-      // Ocultar 50/50 si es reto (porque no aplica)
       fiftyBtn.style.opacity = currentType === "question" ? "1" : "0.25";
     }
 
@@ -1030,7 +1157,7 @@
       currentItem = pickRandomItem(forceType);
       currentType = currentItem.type;
       pendingWasSuccess = false;
-
+      lastCountdownShown = null;
       renderCurrentItem();
     }
 
@@ -1042,8 +1169,6 @@
 
       questionNumberText.textContent = `Participación ${roundCount + 1} de ${maxPerRound}`;
       typeLabel.textContent = currentType === "question" ? "Pregunta" : "Reto";
-
-      if (!currentItem) return;
 
       questionText.textContent = currentItem.text;
       updateLifelineButtons();
@@ -1191,21 +1316,34 @@
     // ===============================
     // Timer principal
     // ===============================
+    function showCountdownNumber(n) {
+      if (lastCountdownShown === n) return;
+      lastCountdownShown = n;
+      countdownOverlay.textContent = n;
+      countdownOverlay.classList.remove("show");
+      void countdownOverlay.offsetWidth; // reinicia animación
+      countdownOverlay.classList.add("show");
+    }
+
     function startTimer(seconds, onTimeOut) {
       stopTimer();
       timeLeft = seconds;
       currentTimeoutCallback = onTimeOut;
       timerText.textContent = timeLeft + "s";
       timerText.classList.remove("timer-warning");
+      lastCountdownShown = null;
 
       timerId = setInterval(() => {
         timeLeft--;
         if (timeLeft < 0) timeLeft = 0;
         timerText.textContent = timeLeft + "s";
 
-        if (timeLeft <= 5 && timeLeft > 0) {
+        const threshold = currentType === "question" ? 5 : 7;
+
+        if (timeLeft > 0 && timeLeft <= threshold) {
           timerText.classList.add("timer-warning");
-          playBeep(900, 110, 0.18);
+          playBeep(900, 110, 0.22);
+          showCountdownNumber(timeLeft);
         }
 
         if (timeLeft <= 0) {
@@ -1257,14 +1395,13 @@
       if (!lifelines.skip) return;
       lifelines.skip = false;
       updateLifelineButtons();
-      loadNewItem(currentType); // mantiene tipo (pregunta/reto)
+      loadNewItem(currentType); // mantiene tipo
     });
 
     phoneBtn.addEventListener("click", () => {
       if (!lifelines.phone || !currentTimeoutCallback) return;
       lifelines.phone = false;
       updateLifelineButtons();
-      // reinicia el tiempo con 30 s
       startTimer(baseTimes.phone, currentTimeoutCallback);
     });
 
@@ -1281,7 +1418,6 @@
         .map((btn, idx) => ({ btn, idx }))
         .filter(obj => obj.idx !== correctIndex);
 
-      // eliminar dos opciones incorrectas
       shuffleArray(incorrect);
       const toRemove = incorrect.slice(0, 2);
       toRemove.forEach(obj => {
@@ -1318,7 +1454,7 @@
       }
     });
 
-    // Iniciar en pantalla de bienvenida
+    // Pantalla inicial
     showStartScreen();
   </script>
 </body>
