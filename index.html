@@ -27,10 +27,9 @@
       min-height: 92vh;
       border-radius: 24px;
       background: rgba(3, 7, 18, 0.96);
-      padding: 20px;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
       position: relative;
       overflow: hidden;
@@ -52,7 +51,7 @@
       top: -60%;
       left: -60%;
       z-index: -1;
-      animation: spin 18s linear infinite;
+      animation: spin 20s linear infinite;
     }
 
     @keyframes spin {
@@ -69,63 +68,131 @@
       height: 100%;
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .header h1 {
-      font-size: 1.4rem;
-      margin-bottom: 4px;
-    }
-
-    .header p {
-      font-size: 0.85rem;
-      opacity: 0.8;
-    }
-
-    .status-bar {
+    /* Barra superior tipo Preguntados */
+    .top-bar {
+      background: linear-gradient(to right, #facc15, #f97316);
+      color: #111827;
+      padding: 10px 16px 6px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin: 10px 0 14px 0;
+      justify-content: space-between;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    }
+
+    .top-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .top-title {
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+    }
+
+    .top-subtitle {
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+
+    .top-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+    }
+
+    .circle-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: #fefce8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.75rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .status-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-pill span.icon {
       font-size: 0.9rem;
     }
 
-    .pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #020617;
-      border: 1px solid #1f2937;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .timer {
+      font-weight: 700;
     }
 
-    .pill span.icon {
-      font-size: 1rem;
+    .timer-warning {
+      color: #fecaca;
+      animation: pulse 0.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .content-area {
+      flex: 1;
+      padding: 12px 14px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .main-card {
       flex: 1;
       background: #020617;
-      border-radius: 20px;
-      padding: 16px;
+      border-radius: 22px;
+      padding: 14px;
       border: 1px solid #111827;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 12px;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.6);
     }
 
-    .type-label {
+    .category-label {
       align-self: flex-start;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
       padding: 4px 10px;
       border-radius: 999px;
       background: #1d4ed8;
+    }
+
+    .question-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .question-number {
+      font-size: 0.8rem;
+      opacity: 0.85;
+    }
+
+    .streak-pill {
+      font-size: 0.8rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #022c22;
+      color: #bbf7d0;
     }
 
     .question-text {
@@ -138,13 +205,13 @@
       font-size: 0.9rem;
       text-align: center;
       opacity: 0.85;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .center-container {
       display: flex;
       justify-content: center;
-      margin-top: 18px;
+      margin-top: 14px;
     }
 
     .lottery-btn {
@@ -170,7 +237,7 @@
       position: absolute;
       inset: 0;
       background: radial-gradient(circle at 20% 0%, #ffffff77, transparent 55%);
-      opacity: 0.8;
+      opacity: 0.9;
       mix-blend-mode: soft-light;
     }
 
@@ -186,7 +253,7 @@
     }
 
     .options {
-      margin-top: 14px;
+      margin-top: 12px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -204,7 +271,7 @@
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      transition: transform 0.12s, background 0.12s, box-shadow 0.12s;
+      transition: transform 0.12s, background 0.12s, box-shadow 0.12s, border-color 0.12s;
       border: 1px solid #111827;
     }
 
@@ -221,20 +288,27 @@
     }
 
     .option-btn.correct {
-      background: #15803d;
+      background: #16a34a;
       border-color: #22c55e;
+      color: #ecfdf3;
     }
 
     .option-btn.wrong {
       background: #b91c1c;
-      border-color: #f97373;
+      border-color: #fecaca;
+      color: #fee2e2;
+    }
+
+    .option-btn.eliminated {
+      opacity: 0.4;
+      text-decoration: line-through;
     }
 
     .primary-btn,
     .secondary-btn {
       border-radius: 999px;
       border: none;
-      padding: 10px 18px;
+      padding: 9px 16px;
       font-size: 0.9rem;
       cursor: pointer;
       display: inline-flex;
@@ -256,19 +330,18 @@
       color: #e5e7eb;
     }
 
-    .timer {
-      font-weight: 600;
+    .primary-btn:disabled,
+    .secondary-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    .result-text {
-      font-size: 1.2rem;
-      font-weight: 700;
-      text-align: center;
-      margin-top: 8px;
+    .pill-small {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: #111827;
+      color: #e5e7eb;
     }
 
     .feedback-title {
@@ -284,6 +357,13 @@
       text-align: left;
     }
 
+    .result-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 8px;
+    }
+
     .badge-win {
       background: linear-gradient(to right, #22c55e, #a3e635);
       -webkit-background-clip: text;
@@ -296,13 +376,60 @@
       font-weight: 700;
     }
 
-    .footer {
-      margin-top: 16px;
+    /* Barra de comodines */
+    .lifeline-bar {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: #020617;
+      border-radius: 999px;
+      border: 1px solid #111827;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 6px;
+      font-size: 0.78rem;
+    }
+
+    .lifeline-btn {
+      flex: 1;
+      border-radius: 999px;
+      border: none;
+      padding: 6px 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      background: #0b1120;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border: 1px solid #111827;
+      transition: background 0.12s, transform 0.12s, box-shadow 0.12s;
+    }
+
+    .lifeline-btn span.icon {
+      font-size: 1rem;
+    }
+
+    .lifeline-btn:hover:not(:disabled) {
+      background: #020617;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(15,23,42,0.7);
+    }
+
+    .lifeline-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .bottom-footer {
+      padding: 6px 14px 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       opacity: 0.9;
+      color: #e5e7eb;
     }
 
     .app-win .main-card {
@@ -313,6 +440,10 @@
     .app-lose .main-card {
       background: radial-gradient(circle at top, #f9731622, #111827);
       border-color: #f97316;
+    }
+
+    .hidden {
+      display: none !important;
     }
 
     @media (max-width: 480px) {
@@ -326,86 +457,159 @@
 <body>
   <div class="app" id="appRoot">
     <div class="app-inner">
-      <header class="header">
-        <h1>Lotería Planner Lexin</h1>
-        <p>Preguntas y retos básicos para practicar Microsoft Planner en el equipo Lexin.</p>
-      </header>
-
-      <div class="status-bar">
-        <div class="pill">
-          <span class="icon">🎯</span>
-          <span id="progressText">0 / 3</span>
+      <!-- Barra superior -->
+      <div class="top-bar">
+        <div class="top-left">
+          <div class="top-title">PLANNER · LEXIN</div>
+          <div class="top-subtitle">Preguntas y retos básicos para empezar a usar Planner.</div>
         </div>
-        <div class="pill">
-          <span class="icon">⏱️</span>
-          <span class="timer" id="timerText">00s</span>
+        <div class="top-badges">
+          <div class="circle-icon">🎯</div>
+          <div class="status-pill">
+            <span class="icon">✅</span>
+            <span id="progressText">0 / 3</span>
+          </div>
+          <div class="status-pill">
+            <span class="icon">⏱️</span>
+            <span class="timer" id="timerText">00s</span>
+          </div>
         </div>
       </div>
 
-      <main class="main-card" id="mainCard">
-        <!-- Pantalla inicial -->
-        <div id="startScreen">
-          <p class="subtitle">
-            Toca el botón <strong>Lotería</strong> y el sistema elegirá al azar
-            <strong>preguntas y retos sobre Planner</strong>.
-            Cada ronda son 3 participaciones seguidas.
-          </p>
-          <div class="center-container">
-            <button class="lottery-btn" id="startButton">
-              Lotería
-            </button>
-          </div>
-        </div>
-
-        <!-- Pantalla de juego -->
-        <div id="gameScreen" class="hidden">
-          <div id="itemArea">
-            <div class="type-label" id="typeLabel">Pregunta</div>
-            <div class="question-text" id="questionText"></div>
-
-            <!-- Opciones para preguntas -->
-            <div class="options" id="optionsContainer"></div>
-
-            <!-- Botón “Listo” para retos -->
-            <div class="center-container" id="challengeActions">
-              <button id="challengeDoneBtn" class="primary-btn hidden">Listo, lo hice</button>
-            </div>
-          </div>
-
-          <!-- Pantalla de feedback (explicación/respuesta) -->
-          <div id="feedbackArea" class="hidden">
-            <div class="feedback-title" id="feedbackTitle"></div>
-            <p class="feedback-body" id="feedbackBody"></p>
-            <div class="center-container" style="margin-top: 18px;">
-              <button class="primary-btn" id="nextItemBtn" disabled>
-                Siguiente (5)
+      <!-- Contenido central -->
+      <div class="content-area">
+        <div class="main-card" id="mainCard">
+          <!-- Pantalla de inicio -->
+          <div id="startScreen">
+            <p class="subtitle">
+              Toca el botón <strong>Lotería</strong> para iniciar una ronda de
+              <strong>3 participaciones</strong> con preguntas y retos sobre Planner.
+              Usa los comodines si te atoras, como en Preguntados.
+            </p>
+            <div class="center-container">
+              <button class="lottery-btn" id="startButton">
+                Lotería
               </button>
             </div>
           </div>
-        </div>
 
-        <!-- Pantalla final -->
-        <div id="resultScreen" class="hidden">
-          <div class="result-text" id="resultText"></div>
-          <p class="subtitle" id="resultSubtitle"></p>
-          <div class="center-container" style="margin-top: 16px; gap: 8px;">
-            <button class="secondary-btn" id="backHomeBtn">Volver al inicio</button>
-            <button class="primary-btn" id="retryBtn">Otro intento</button>
+          <!-- Pantalla de juego -->
+          <div id="gameScreen" class="hidden">
+            <div id="itemArea">
+              <div class="category-label" id="typeLabel">Pregunta</div>
+
+              <div class="question-header">
+                <div class="question-number" id="questionNumberText">
+                  Pregunta / Reto
+                </div>
+                <div class="streak-pill" id="streakText">
+                  Racha: 0 ✅
+                </div>
+              </div>
+
+              <div class="question-text" id="questionText"></div>
+
+              <!-- Opciones para preguntas -->
+              <div class="options" id="optionsContainer"></div>
+
+              <!-- Acciones para retos -->
+              <div class="center-container" id="challengeActions">
+                <button id="challengeDoneBtn" class="primary-btn hidden">
+                  Listo, lo hice
+                </button>
+              </div>
+            </div>
+
+            <!-- Feedback / explicación -->
+            <div id="feedbackArea" class="hidden">
+              <div class="feedback-title" id="feedbackTitle"></div>
+              <p class="feedback-body" id="feedbackBody"></p>
+              <div class="center-container" style="margin-top: 14px;">
+                <button class="primary-btn" id="nextItemBtn" disabled>
+                  Siguiente (5)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pantalla final -->
+          <div id="resultScreen" class="hidden">
+            <div class="result-text" id="resultText"></div>
+            <p class="subtitle" id="resultSubtitle"></p>
+            <div class="center-container" style="margin-top: 16px; gap: 8px;">
+              <button class="secondary-btn" id="backHomeBtn">Volver al inicio</button>
+              <button class="primary-btn" id="retryBtn">Otro intento</button>
+            </div>
           </div>
         </div>
-      </main>
 
-      <footer class="footer">
+        <!-- Barra de comodines -->
+        <div class="lifeline-bar" id="lifelineBar">
+          <button class="lifeline-btn" id="skipBtn">
+            <span class="icon">🔁</span>
+            <span>Cambiar</span>
+          </button>
+          <button class="lifeline-btn" id="phoneBtn">
+            <span class="icon">☎️</span>
+            <span>Llamar a un amigo</span>
+          </button>
+          <button class="lifeline-btn" id="fiftyBtn">
+            <span class="icon">➖➖</span>
+            <span>50/50</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pie de página -->
+      <div class="bottom-footer">
         <span>Lexin · Planner Power Mode</span>
         <span>Versión demo ampliable</span>
-      </footer>
+      </div>
     </div>
   </div>
 
   <script>
     // ===============================
-    // Banco de preguntas y retos
-    // (puedes seguir agregando más)
+    // AUDIO simple (beeps)
+    // ===============================
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      return audioCtx;
+    }
+
+    function playBeep(freq = 880, duration = 120, volume = 0.25) {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      gain.gain.value = volume;
+      const now = ctx.currentTime;
+      osc.start(now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration / 1000);
+      osc.stop(now + duration / 1000);
+    }
+
+    function playWinSound() {
+      setTimeout(() => playBeep(880, 140, 0.3), 0);
+      setTimeout(() => playBeep(1200, 160, 0.25), 160);
+      setTimeout(() => playBeep(1500, 200, 0.2), 340);
+    }
+
+    function playLoseSound() {
+      setTimeout(() => playBeep(440, 200, 0.3), 0);
+      setTimeout(() => playBeep(330, 220, 0.25), 220);
+    }
+
+    // ===============================
+    // Banco de preguntas y retos (ejemplos)
     // ===============================
 
     const questions = [
@@ -446,7 +650,7 @@
         ],
         correctIndex: 1,
         explanation:
-          "La forma recomendada es entrar a office.com, iniciar sesión con la cuenta institucional, abrir el lanzador de aplicaciones (cuadricula) y seleccionar Planner."
+          "La forma recomendada es entrar a office.com, iniciar sesión con la cuenta institucional, abrir el lanzador de aplicaciones y seleccionar Planner."
       },
       {
         type: "question",
@@ -593,19 +797,6 @@
       },
       {
         type: "question",
-        text: "Si una tarea de Lexin está muy confusa, ¿qué acción es recomendable?",
-        options: [
-          "Ignorarla hasta que desaparezca",
-          "Borrarla sin avisar",
-          "Mejorar el título y la descripción, y comentar en la tarea para aclarar dudas",
-          "Crear otra tarea duplicada"
-        ],
-        correctIndex: 2,
-        explanation:
-          "Es mejor aclarar la tarea: mejorar título/descripción y usar los comentarios para que el equipo comparta dudas y acuerdos."
-      },
-      {
-        type: "question",
         text: "¿Por qué Lexin quiere implementar Planner?",
         options: [
           "Porque está de moda tener muchas apps",
@@ -617,13 +808,14 @@
         explanation:
           "Lexin busca en Planner un espacio visual y compartido para organizar tareas y proyectos, asignar responsables y hacer seguimiento."
       }
+      // Aquí puedes seguir agregando más preguntas básicas
     ];
 
     const challenges = [
       {
         type: "challenge",
         text:
-          "Reto: Explica en voz alta, en menos de 30 segundos, qué es Planner y para qué lo está usando Lexin.",
+          "Reto: Explica en voz alta, en menos de 20 segundos, qué es Planner y para qué lo está usando Lexin.",
         guide:
           "Respuesta sugerida: Planner es una herramienta de Office 365 para organizar tareas y proyectos. Lexin la usa para visualizar el trabajo del equipo, asignar responsables y hacer seguimiento de sus actividades."
       },
@@ -632,28 +824,21 @@
         text:
           "Reto: Desde tu computador, entra a office.com e indica paso a paso cómo encontrar la aplicación Planner.",
         guide:
-          "Guía sugerida: 1) Abre office.com. 2) Inicia sesión con tu cuenta institucional. 3) Haz clic en el lanzador de aplicaciones (cuadrito de puntos). 4) Busca y selecciona 'Planner'."
+          "Guía sugerida: 1) Abre office.com. 2) Inicia sesión con tu cuenta institucional. 3) Haz clic en el lanzador de aplicaciones. 4) Busca y selecciona 'Planner'."
       },
       {
         type: "challenge",
         text:
           "Reto: Piensa en un proyecto real del equipo Lexin y di en voz alta cómo lo organizarías en buckets dentro de Planner.",
         guide:
-          "Ejemplo: Para un proyecto, podrías crear buckets como 'Ideas', 'En planeación', 'En ejecución' y 'Finalizado'. Así se ve el avance de Lexin de forma clara."
+          "Ejemplo: Crear buckets como 'Ideas', 'En planeación', 'En ejecución' y 'Finalizado' para visualizar el avance del proyecto."
       },
       {
         type: "challenge",
         text:
-          "Reto: Imagina una tarea que hoy haces por correo. Di en voz alta cómo la convertirías en una tarea de Planner (título, descripción y responsable).",
+          "Reto: Menciona en voz alta al menos tres datos que puedes configurar dentro de una tarea de Planner.",
         guide:
-          "Ejemplo: Título: 'Enviar reporte semanal de Lexin'. Descripción: Detallar contenido del reporte y fecha. Responsable: asignar a la persona encargada."
-      },
-      {
-        type: "challenge",
-        text:
-          "Reto: Menciona al menos tres datos que puedes configurar dentro de una tarea de Planner.",
-        guide:
-          "Respuesta sugerida: En una tarea de Planner puedes configurar: título, descripción, fecha de vencimiento, asignados, checklist, etiquetas, adjuntos y comentarios."
+          "Respuesta sugerida: título, descripción, fecha de vencimiento, asignados, checklist, etiquetas, adjuntos y comentarios."
       },
       {
         type: "challenge",
@@ -665,56 +850,48 @@
       {
         type: "challenge",
         text:
-          "Reto: Piensa una tarea que actualmente no está clara en el equipo Lexin y describe cómo la reescribirías en Planner para que cualquiera la entienda.",
+          "Reto: Imagina que debes enseñar Planner a un nuevo miembro de Lexin. Resume en 20 segundos cómo le explicarías el plan principal del equipo.",
         guide:
-          "Guía: Usa un título claro orientado a la acción y una descripción que explique qué se espera, para cuándo y con qué criterios de éxito."
-      },
-      {
-        type: "challenge",
-        text:
-          "Reto: Imagina que debes enseñar Planner a un nuevo miembro de Lexin. Resume en 30 segundos cómo le explicarías el plan principal del equipo.",
-        guide:
-          "Ejemplo: 'Este es nuestro plan en Planner: aquí vemos los buckets con las fases del trabajo, las tareas con sus responsables y fechas, y usamos colores para los tipos de actividad.'"
-      },
-      {
-        type: "challenge",
-        text:
-          "Reto: Menciona en voz alta dos beneficios que esperas lograr en Lexin usando Planner durante los próximos meses.",
-        guide:
-          "Beneficios posibles: mayor claridad sobre quién hace qué, menos confusión por tareas duplicadas, mejor seguimiento de fechas y avances."
-      },
-      {
-        type: "challenge",
-        text:
-          "Reto: Describe cómo podrías usar las etiquetas de colores en Planner para organizar las tareas de Lexin.",
-        guide:
-          "Ejemplo: usar etiquetas por tipo de tarea (formación, soporte, reuniones), o por prioridad (alta, media, baja), o por proyecto."
+          "Ejemplo: 'Este es nuestro plan en Planner: vemos buckets con las fases del trabajo, tareas con responsables y fechas, y usamos colores para los tipos de actividad'."
       }
+      // Aquí puedes agregar más retos similares
     ];
 
     // ===============================
     // Estado del juego
     // ===============================
+    const baseTimes = {
+      question: 15,
+      challenge: 20,
+      phone: 30
+    };
+
     const maxPerRound = 3;
     let currentItem = null;
-    let currentType = null; // 'question' o 'challenge'
+    let currentType = null; // "question" o "challenge"
     let roundCount = 0;
     let successCount = 0;
     let timerId = null;
     let timeLeft = 0;
+    let currentTimeoutCallback = null;
+
     let pendingWasSuccess = false;
     let feedbackTimerId = null;
     let feedbackSeconds = 5;
-    let lastResultSource = "question"; // para tipo de mensaje
+
+    let lifelines = {
+      skip: true,
+      phone: true,
+      fifty: true
+    };
 
     // ===============================
-    // Elementos del DOM
+    // Elementos DOM
     // ===============================
     const appRoot = document.getElementById("appRoot");
     const startScreen = document.getElementById("startScreen");
     const gameScreen = document.getElementById("gameScreen");
     const resultScreen = document.getElementById("resultScreen");
-
     const itemArea = document.getElementById("itemArea");
     const feedbackArea = document.getElementById("feedbackArea");
 
@@ -722,6 +899,8 @@
     const progressText = document.getElementById("progressText");
     const timerText = document.getElementById("timerText");
     const typeLabel = document.getElementById("typeLabel");
+    const questionNumberText = document.getElementById("questionNumberText");
+    const streakText = document.getElementById("streakText");
     const questionText = document.getElementById("questionText");
     const optionsContainer = document.getElementById("optionsContainer");
     const challengeActions = document.getElementById("challengeActions");
@@ -736,8 +915,12 @@
     const retryBtn = document.getElementById("retryBtn");
     const backHomeBtn = document.getElementById("backHomeBtn");
 
+    const skipBtn = document.getElementById("skipBtn");
+    const phoneBtn = document.getElementById("phoneBtn");
+    const fiftyBtn = document.getElementById("fiftyBtn");
+
     // ===============================
-    // Funciones de navegación
+    // Navegación
     // ===============================
     function showStartScreen() {
       stopTimer();
@@ -746,7 +929,7 @@
       successCount = 0;
       updateProgress();
       timerText.textContent = "00s";
-
+      timerText.classList.remove("timer-warning");
       appRoot.classList.remove("app-win", "app-lose");
 
       startScreen.classList.remove("hidden");
@@ -775,34 +958,42 @@
         resultText.innerHTML = "🎉 ¡Ganaste! <span class='badge-win'>Eres un pro en Planner</span> 🎉";
         resultSubtitle.textContent =
           "Completaste 3 participaciones exitosas. Sigue usando Planner con Lexin para mantener este nivel.";
+        playWinSound();
       } else {
         appRoot.classList.add("app-lose");
         appRoot.classList.remove("app-win");
         resultText.innerHTML = "✨ Estás casi a ser un pro en Planner ✨";
         resultSubtitle.textContent =
           "Sigue practicando en Planner con el equipo Lexin. Cada intento te ayuda a entender mejor la herramienta.";
+        playLoseSound();
       }
     }
 
     function updateProgress() {
       progressText.textContent = `${roundCount} / ${maxPerRound}`;
+      streakText.textContent = `Racha: ${successCount} ✅`;
     }
 
     // ===============================
-    // Lógica del juego
+    // Juego
     // ===============================
     function randomFromArray(arr) {
       const i = Math.floor(Math.random() * arr.length);
       return arr[i];
     }
 
-    function pickRandomItem() {
-      // 50% preguntas, 50% retos (siempre y cuando existan ambos)
+    function pickRandomItem(type) {
+      if (type === "question") {
+        return randomFromArray(questions);
+      } else if (type === "challenge") {
+        return randomFromArray(challenges);
+      }
+      // Mezcla 50/50 si no se especifica
       const chooseQuestion = Math.random() < 0.5;
       if (chooseQuestion && questions.length > 0) {
-        return questions[Math.floor(Math.random() * questions.length)];
+        return randomFromArray(questions);
       } else if (!chooseQuestion && challenges.length > 0) {
-        return challenges[Math.floor(Math.random() * challenges.length)];
+        return randomFromArray(challenges);
       } else if (questions.length > 0) {
         return randomFromArray(questions);
       } else {
@@ -810,21 +1001,35 @@
       }
     }
 
+    function resetLifelines() {
+      lifelines = { skip: true, phone: true, fifty: true };
+      updateLifelineButtons();
+    }
+
+    function updateLifelineButtons() {
+      skipBtn.disabled = !lifelines.skip;
+      phoneBtn.disabled = !lifelines.phone;
+      fiftyBtn.disabled = !lifelines.fifty || currentType !== "question";
+
+      // Ocultar 50/50 si es reto (porque no aplica)
+      fiftyBtn.style.opacity = currentType === "question" ? "1" : "0.25";
+    }
+
     function startGame() {
       roundCount = 0;
       successCount = 0;
       updateProgress();
       appRoot.classList.remove("app-win", "app-lose");
+      resetLifelines();
       loadNewItem();
     }
 
-    function loadNewItem() {
+    function loadNewItem(forceType = null) {
       stopTimer();
       stopFeedbackTimer();
-      currentItem = pickRandomItem();
+      currentItem = pickRandomItem(forceType);
       currentType = currentItem.type;
       pendingWasSuccess = false;
-      lastResultSource = currentType;
 
       renderCurrentItem();
     }
@@ -835,49 +1040,42 @@
       itemArea.classList.remove("hidden");
       feedbackArea.classList.add("hidden");
 
+      questionNumberText.textContent = `Participación ${roundCount + 1} de ${maxPerRound}`;
+      typeLabel.textContent = currentType === "question" ? "Pregunta" : "Reto";
+
       if (!currentItem) return;
 
+      questionText.textContent = currentItem.text;
+      updateLifelineButtons();
+
       if (currentType === "question") {
-        typeLabel.textContent = "Pregunta";
-        questionText.textContent = currentItem.text;
         optionsContainer.classList.remove("hidden");
         challengeDoneBtn.classList.add("hidden");
 
-        currentItem.options.forEach(function (opt, index) {
+        currentItem.options.forEach((opt, index) => {
           const btn = document.createElement("button");
           btn.className = "option-btn";
-          btn.innerHTML =
-            "<span><span class='index'>" +
-            String.fromCharCode(65 + index) +
-            ".</span> " +
-            opt +
-            "</span>";
-          btn.addEventListener("click", function () {
-            handleAnswer(index, btn);
-          });
+          btn.innerHTML = `<span><span class="index">${String.fromCharCode(
+            65 + index
+          )}.</span> ${opt}</span>`;
+          btn.addEventListener("click", () => handleAnswer(index));
           optionsContainer.appendChild(btn);
         });
 
-        startTimer(20, function () {
-          // Se acabó el tiempo para la pregunta
+        startTimer(baseTimes.question, () => {
           pendingWasSuccess = false;
-          showFeedback(false, true); // false = fallo, true = por tiempo
+          showFeedback(false, true);
         });
-      } else if (currentType === "challenge") {
-        typeLabel.textContent = "Reto";
-        questionText.textContent = currentItem.text;
-
+      } else {
         optionsContainer.classList.add("hidden");
         challengeDoneBtn.classList.remove("hidden");
 
-        challengeDoneBtn.onclick = function () {
-          // El participante indica que lo realizó
+        challengeDoneBtn.onclick = () => {
           pendingWasSuccess = true;
           showFeedback(true, false);
         };
 
-        startTimer(30, function () {
-          // Se acabó el tiempo para el reto
+        startTimer(baseTimes.challenge, () => {
           pendingWasSuccess = false;
           showFeedback(false, true);
         });
@@ -892,11 +1090,11 @@
       if (!currentItem || currentType !== "question") return;
 
       const correctIndex = currentItem.correctIndex;
-      const optionButtons = Array.prototype.slice.call(
+      const buttons = Array.from(
         optionsContainer.querySelectorAll(".option-btn")
       );
 
-      optionButtons.forEach(function (btn, i) {
+      buttons.forEach((btn, i) => {
         if (i === correctIndex) btn.classList.add("correct");
         if (i === selectedIndex && selectedIndex !== correctIndex) {
           btn.classList.add("wrong");
@@ -925,6 +1123,7 @@
 
       if (currentType === "question") {
         const correctText = currentItem.options[currentItem.correctIndex];
+
         if (isSuccess) {
           title = "✅ ¡Respuesta correcta!";
           body =
@@ -947,14 +1146,13 @@
             "</strong>. " +
             (currentItem.explanation || "");
         }
-      } else if (currentType === "challenge") {
+      } else {
         if (isSuccess) {
           title = "💪 ¡Reto completado!";
           body =
             (currentItem.guide
               ? "Esta es una forma sugerida de hacerlo: "
-              : "") +
-            (currentItem.guide || "");
+              : "") + (currentItem.guide || "");
         } else if (byTimeout) {
           title = "⏱️ Reto no completado a tiempo";
           body =
@@ -973,16 +1171,13 @@
 
       nextItemBtn.disabled = true;
       feedbackSeconds = 5;
-      nextItemBtn.textContent = "Siguiente (" + feedbackSeconds + ")";
+      nextItemBtn.textContent = `Siguiente (${feedbackSeconds})`;
       startFeedbackTimer();
     }
 
     function applyFeedbackAndContinue() {
-      // Se ejecuta cuando el usuario pulsa “Siguiente”
       roundCount++;
-      if (pendingWasSuccess) {
-        successCount++;
-      }
+      if (pendingWasSuccess) successCount++;
       updateProgress();
 
       if (roundCount >= maxPerRound) {
@@ -999,17 +1194,25 @@
     function startTimer(seconds, onTimeOut) {
       stopTimer();
       timeLeft = seconds;
+      currentTimeoutCallback = onTimeOut;
       timerText.textContent = timeLeft + "s";
+      timerText.classList.remove("timer-warning");
 
-      timerId = setInterval(function () {
+      timerId = setInterval(() => {
         timeLeft--;
         if (timeLeft < 0) timeLeft = 0;
         timerText.textContent = timeLeft + "s";
 
+        if (timeLeft <= 5 && timeLeft > 0) {
+          timerText.classList.add("timer-warning");
+          playBeep(900, 110, 0.18);
+        }
+
         if (timeLeft <= 0) {
           stopTimer();
-          if (typeof onTimeOut === "function") {
-            onTimeOut();
+          timerText.classList.remove("timer-warning");
+          if (typeof currentTimeoutCallback === "function") {
+            currentTimeoutCallback();
           }
         }
       }, 1000);
@@ -1023,11 +1226,11 @@
     }
 
     // ===============================
-    // Timer de feedback (5 segundos)
+    // Timer de feedback (5 s)
     // ===============================
     function startFeedbackTimer() {
       stopFeedbackTimer();
-      feedbackTimerId = setInterval(function () {
+      feedbackTimerId = setInterval(() => {
         feedbackSeconds--;
         if (feedbackSeconds <= 0) {
           feedbackSeconds = 0;
@@ -1035,7 +1238,7 @@
           nextItemBtn.disabled = false;
           nextItemBtn.textContent = "Siguiente";
         } else {
-          nextItemBtn.textContent = "Siguiente (" + feedbackSeconds + ")";
+          nextItemBtn.textContent = `Siguiente (${feedbackSeconds})`;
         }
       }, 1000);
     }
@@ -1048,27 +1251,74 @@
     }
 
     // ===============================
-    // Eventos
+    // Comodines
     // ===============================
-    startButton.addEventListener("click", function () {
+    skipBtn.addEventListener("click", () => {
+      if (!lifelines.skip) return;
+      lifelines.skip = false;
+      updateLifelineButtons();
+      loadNewItem(currentType); // mantiene tipo (pregunta/reto)
+    });
+
+    phoneBtn.addEventListener("click", () => {
+      if (!lifelines.phone || !currentTimeoutCallback) return;
+      lifelines.phone = false;
+      updateLifelineButtons();
+      // reinicia el tiempo con 30 s
+      startTimer(baseTimes.phone, currentTimeoutCallback);
+    });
+
+    fiftyBtn.addEventListener("click", () => {
+      if (!lifelines.fifty || currentType !== "question") return;
+      lifelines.fifty = false;
+      updateLifelineButtons();
+
+      const buttons = Array.from(
+        optionsContainer.querySelectorAll(".option-btn")
+      );
+      const correctIndex = currentItem.correctIndex;
+      const incorrect = buttons
+        .map((btn, idx) => ({ btn, idx }))
+        .filter(obj => obj.idx !== correctIndex);
+
+      // eliminar dos opciones incorrectas
+      shuffleArray(incorrect);
+      const toRemove = incorrect.slice(0, 2);
+      toRemove.forEach(obj => {
+        obj.btn.classList.add("eliminated");
+        obj.btn.disabled = true;
+      });
+    });
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    // ===============================
+    // Eventos generales
+    // ===============================
+    startButton.addEventListener("click", () => {
       startGame();
     });
 
-    retryBtn.addEventListener("click", function () {
+    retryBtn.addEventListener("click", () => {
       startGame();
     });
 
-    backHomeBtn.addEventListener("click", function () {
+    backHomeBtn.addEventListener("click", () => {
       showStartScreen();
     });
 
-    nextItemBtn.addEventListener("click", function () {
+    nextItemBtn.addEventListener("click", () => {
       if (!nextItemBtn.disabled) {
         applyFeedbackAndContinue();
       }
     });
 
-    // Pantalla inicial por defecto
+    // Iniciar en pantalla de bienvenida
     showStartScreen();
   </script>
 </body>
