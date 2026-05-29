@@ -1,1457 +1,475 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Lotería Planner Lexin</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎓 Facilitator Board</title>
+<style>
+:root {
+  --bg:#0d0d1a;--surface:#1a1a2e;--surface2:#16213e;
+  --accent:#7c3aed;--accent2:#06b6d4;
+  --text:#e2e8f0;--muted:#94a3b8;--radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: radial-gradient(circle at top, #4f46e5, #111827);
-      color: #f9fafb;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
+/* ── HEADER ── */
+.hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;background:var(--surface);
+  border-bottom:1px solid rgba(255,255,255,.06)}
+.hdr-title{font-size:1.1rem;font-weight:800;
+  background:linear-gradient(135deg,#7c3aed,#06b6d4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.fs-btn{background:rgba(255,255,255,.08);border:none;color:var(--muted);
+  padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.82rem;
+  transition:all .2s}
+.fs-btn:hover{background:rgba(255,255,255,.16);color:var(--text)}
 
-    /* Tema claro */
-    body.light-theme {
-      background: radial-gradient(circle at top, #e5e7eb, #c7d2fe);
-      color: #0f172a;
-    }
-    body.light-theme .app {
-      background: rgba(249, 250, 251, 0.98);
-      color: #0f172a;
-    }
-    body.light-theme .main-card {
-      background: #f9fafb;
-      border-color: #e5e7eb;
-    }
-    body.light-theme .lifeline-bar {
-      background: #e5e7eb;
-      border-color: #d1d5db;
-    }
-    body.light-theme .lifeline-btn {
-      background: #f9fafb;
-      border-color: #d1d5db;
-      color: #111827;
-    }
-    body.light-theme .lifeline-btn:hover:not(:disabled) {
-      background: #e5e7eb;
-    }
-    body.light-theme .top-bar {
-      background: linear-gradient(to right, #3b82f6, #a855f7);
-      color: #f9fafb;
-    }
-    body.light-theme .bottom-footer {
-      color: #111827;
-    }
-    body.light-theme .option-btn {
-      background: #f9fafb;
-      color: #111827;
-      border-color: #e5e7eb;
-    }
-    body.light-theme .option-btn:hover {
-      background: #e5e7eb;
-    }
+/* ── TIMER SECTION ── */
+.timer-sec{background:var(--surface);padding:22px 28px 18px;
+  border-bottom:1px solid rgba(255,255,255,.06)}
+.timer-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:18px}
+.timer-display{font-size:5.5rem;font-weight:900;font-variant-numeric:tabular-nums;
+  letter-spacing:3px;line-height:1;
+  text-shadow:0 0 40px rgba(124,58,237,.45);transition:color .3s,text-shadow .3s}
+.timer-display.warn{color:#f59e0b;text-shadow:0 0 30px rgba(245,158,11,.55)}
+.timer-display.danger{color:#ef4444;text-shadow:0 0 30px rgba(239,68,68,.6)}
+.timer-display.done{color:#ef4444;animation:blink .5s infinite alternate}
+@keyframes blink{from{opacity:1;transform:scale(1)}to{opacity:.5;transform:scale(1.03)}}
+.over-msg{display:none;font-size:1.6rem;font-weight:800;color:#ef4444;
+  animation:dropIn .4s ease;letter-spacing:1px}
+@keyframes dropIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
 
-    .app {
-      width: 100%;
-      max-width: 520px;
-      min-height: 95vh;
-      border-radius: 24px;
-      background: rgba(3, 7, 18, 0.96);
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7);
-      position: relative;
-      overflow: hidden;
-    }
+.timer-controls{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+.presets{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.pst-btn{background:var(--surface2);border:1px solid rgba(255,255,255,.1);
+  color:var(--muted);padding:7px 16px;border-radius:20px;cursor:pointer;
+  font-size:.88rem;font-weight:700;transition:all .2s}
+.pst-btn:hover{background:rgba(124,58,237,.25);border-color:var(--accent);color:var(--text)}
+.pst-btn.active-preset{background:rgba(124,58,237,.35);border-color:var(--accent);color:var(--text)}
 
-    .app::before {
-      content: "";
-      position: absolute;
-      width: 220%;
-      height: 220%;
-      background: conic-gradient(
-        from 180deg,
-        #22c55e33,
-        #3b82f633,
-        #a855f733,
-        #f9731633,
-        #22c55e33
-      );
-      top: -60%;
-      left: -60%;
-      z-index: -1;
-      animation: spin 22s linear infinite;
-    }
+.input-wrap{display:flex;align-items:center;gap:7px}
+.min-inp{background:var(--surface2);border:1px solid rgba(255,255,255,.15);
+  color:var(--text);padding:7px 10px;border-radius:12px;
+  font-size:.95rem;width:80px;text-align:center;outline:none;transition:border-color .2s}
+.min-inp:focus{border-color:var(--accent)}
+.set-btn{background:var(--accent);border:none;color:#fff;padding:7px 16px;
+  border-radius:12px;cursor:pointer;font-size:.88rem;font-weight:700;transition:filter .2s}
+.set-btn:hover{filter:brightness(1.2)}
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+.t-actions{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.t-btn{padding:11px 30px;border:none;border-radius:14px;font-size:1.05rem;
+  font-weight:800;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:7px}
+.t-btn:active{transform:scale(.94)}
+.btn-start{background:linear-gradient(135deg,#22c55e,#15803d);color:#fff}
+.btn-pause{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
+.btn-reset{background:rgba(255,255,255,.07);color:var(--muted);
+  border:1px solid rgba(255,255,255,.1)}
+.btn-reset:hover{background:rgba(255,255,255,.14);color:var(--text)}
 
-    .app-inner {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
+/* ── PROGRESS BAR ── */
+.prog-bar-wrap{height:4px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:16px}
+.prog-bar{height:100%;border-radius:2px;transition:width .95s linear,background .3s;
+  background:linear-gradient(90deg,#7c3aed,#06b6d4)}
+.prog-bar.warn{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.prog-bar.danger{background:linear-gradient(90deg,#ef4444,#f87171)}
 
-    /* Barra superior */
-    .top-bar {
-      background: linear-gradient(to right, #facc15, #f97316);
-      color: #111827;
-      padding: 10px 16px 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-    }
+/* ── SOUND SECTION ── */
+.snd-sec{flex:1;padding:18px 22px 24px;overflow-y:auto}
+.snd-heading{font-size:.78rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:2.5px;color:var(--muted);text-align:center;margin-bottom:14px}
+.snd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));
+  gap:11px;max-width:1200px;margin:0 auto}
 
-    .top-left {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+.snd-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:18px 10px;border:none;border-radius:var(--radius);cursor:pointer;
+  font-weight:700;color:#fff;transition:transform .15s,filter .15s;
+  position:relative;overflow:hidden;min-height:106px;user-select:none}
+.snd-btn:hover{filter:brightness(1.12);transform:translateY(-2px)}
+.snd-btn:active{transform:scale(.92)!important}
+.snd-btn.flash::after{content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,.28);border-radius:var(--radius);
+  animation:flash .25s ease forwards}
+@keyframes flash{from{opacity:1}to{opacity:0}}
+.snd-icon{font-size:2rem;line-height:1;pointer-events:none}
+.snd-label{font-size:.78rem;text-align:center;line-height:1.25;pointer-events:none}
 
-    .top-title {
-      font-weight: 900;
-      font-size: 1rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
+/* colors */
+.c0{background:linear-gradient(135deg,#dc2626,#9f1239)}
+.c1{background:linear-gradient(135deg,#d97706,#92400e)}
+.c2{background:linear-gradient(135deg,#2563eb,#1e3a8a)}
+.c3{background:linear-gradient(135deg,#0891b2,#164e63)}
+.c4{background:linear-gradient(135deg,#7c3aed,#4c1d95)}
+.c5{background:linear-gradient(135deg,#db2777,#831843)}
+.c6{background:linear-gradient(135deg,#16a34a,#14532d)}
+.c7{background:linear-gradient(135deg,#ea580c,#7c2d12)}
+.c8{background:linear-gradient(135deg,#0f766e,#042f2e)}
+.c9{background:linear-gradient(135deg,#4f46e5,#312e81)}
+.c10{background:linear-gradient(135deg,#65a30d,#365314)}
+.c11{background:linear-gradient(135deg,#e11d48,#881337)}
 
-    .top-subtitle {
-      font-size: 0.8rem;
-      opacity: 0.9;
-    }
+/* ripple */
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);
+  transform:scale(0);animation:ripple .55s linear;pointer-events:none}
+@keyframes ripple{to{transform:scale(5);opacity:0}}
 
-    .top-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+/* scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 
-    .top-badges {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.85rem;
-    }
-
-    .circle-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: #fefce8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .status-pill {
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.15);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .status-pill span.icon {
-      font-size: 0.95rem;
-    }
-
-    .timer {
-      font-weight: 800;
-    }
-
-    .timer-warning {
-      color: #fecaca;
-      animation: pulse 0.8s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
-    .theme-toggle-btn {
-      border-radius: 999px;
-      border: none;
-      padding: 4px 8px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(0,0,0,0.15);
-      color: inherit;
-    }
-
-    .content-area {
-      flex: 1;
-      padding: 10px 14px 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .main-card {
-      flex: 1;
-      background: #020617;
-      border-radius: 22px;
-      padding: 16px;
-      border: 1px solid #111827;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 10px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-    }
-
-    .category-label {
-      align-self: flex-start;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #1d4ed8;
-    }
-
-    .question-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 8px;
-    }
-
-    .question-number {
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
-
-    .streak-pill {
-      font-size: 0.9rem;
-      padding: 3px 10px;
-      border-radius: 999px;
-      background: #022c22;
-      color: #bbf7d0;
-    }
-
-    .question-text {
-      font-size: 1.15rem;
-      line-height: 1.5;
-      margin-top: 8px;
-    }
-
-    .subtitle {
-      font-size: 1rem;
-      text-align: center;
-      opacity: 0.9;
-      margin-top: 8px;
-    }
-
-    .center-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 16px;
-    }
-
-    /* NUEVO BOTÓN RECTANGULAR A JUGAR (sustituye al botón circular) */
-    .start-rect-btn {
-      width: 90%;
-      max-width: 420px;
-      padding: 22px;
-      border-radius: 18px;
-      border: none;
-      background: linear-gradient(90deg, #facc15, #f97316);
-      color: #111827;
-      font-weight: 900;
-      font-size: 1.6rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
-      cursor: pointer;
-      transition: transform 0.15s, filter 0.2s, box-shadow 0.15s;
-      position: absolute;
-      bottom: 26px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .start-rect-btn:hover {
-      transform: translateX(-50%) scale(1.03);
-      filter: brightness(1.08);
-      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.55);
-    }
-
-    .start-rect-btn:active {
-      transform: translateX(-50%) scale(0.97);
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4);
-    }
-
-    .options {
-      margin-top: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .option-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 12px 16px;
-      background: #020617;
-      color: #f9fafb;
-      text-align: left;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: transform 0.12s, background 0.12s, box-shadow 0.12s, border-color 0.12s;
-      border: 1px solid #111827;
-    }
-
-    .option-btn span.index {
-      font-weight: 700;
-      margin-right: 8px;
-      opacity: 0.85;
-      font-size: 1.05rem;
-    }
-
-    .option-btn:hover {
-      transform: translateY(-1px);
-      background: #02091f;
-      box-shadow: 0 4px 11px rgba(15, 23, 42, 0.9);
-    }
-
-    .option-btn.correct {
-      background: #16a34a;
-      border-color: #22c55e;
-      color: #ecfdf3;
-      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.8);
-    }
-
-    .option-btn.wrong {
-      background: #b91c1c;
-      border-color: #fecaca;
-      color: #fee2e2;
-      box-shadow: 0 4px 14px rgba(185, 28, 28, 0.8);
-    }
-
-    .option-btn.eliminated {
-      opacity: 0.4;
-      text-decoration: line-through;
-    }
-
-    .primary-btn,
-    .secondary-btn {
-      border-radius: 999px;
-      border: none;
-      padding: 10px 18px;
-      font-size: 0.95rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-
-    .primary-btn {
-      background: #22c55e;
-      color: #022c22;
-      font-weight: 700;
-    }
-
-    .secondary-btn {
-      background: transparent;
-      border: 1px solid #4b5563;
-      color: #e5e7eb;
-    }
-
-    .primary-btn:disabled,
-    .secondary-btn:disabled {
-      opacity: 0.4;
-      cursor: default;
-    }
-
-    .feedback-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .feedback-body {
-      font-size: 1rem;
-      opacity: 0.95;
-      text-align: left;
-    }
-
-    .result-text {
-      font-size: 1.6rem;
-      font-weight: 900;
-      text-align: center;
-      margin-top: 8px;
-    }
-
-    .win-bounce {
-      display: inline-block;
-      animation: bounce-colors 2.2s infinite;
-    }
-
-    @keyframes bounce-colors {
-      0%   { transform: translateX(-10%) translateY(0) scale(1); color: #22c55e; }
-      25%  { transform: translateX(10%) translateY(-10px) scale(1.1); color: #facc15; }
-      50%  { transform: translateX(-5%) translateY(0) scale(1); color: #38bdf8; }
-      75%  { transform: translateX(5%) translateY(-12px) scale(1.12); color: #f97316; }
-      100% { transform: translateX(0) translateY(0) scale(1); color: #22c55e; }
-    }
-
-    .subtitle-small {
-      font-size: 0.95rem;
-      text-align: center;
-      opacity: 0.9;
-      margin-top: 8px;
-    }
-
-    .lifeline-bar {
-      margin-top: 6px;
-      padding: 8px 10px;
-      background: #020617;
-      border-radius: 999px;
-      border: 1px solid #111827;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      gap: 6px;
-      font-size: 0.85rem;
-    }
-
-    .lifeline-btn {
-      flex: 1;
-      border-radius: 999px;
-      border: none;
-      padding: 8px 8px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      background: #0b1120;
-      color: #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      border: 1px solid #111827;
-      transition: background 0.12s, transform 0.12s, box-shadow 0.12s;
-    }
-
-    .lifeline-btn span.icon {
-      font-size: 1.1rem;
-    }
-
-    .lifeline-btn:hover:not(:disabled) {
-      background: #020617;
-      transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(15,23,42,0.8);
-    }
-
-    .lifeline-btn:disabled {
-      opacity: 0.3;
-      cursor: default;
-    }
-
-    .bottom-footer {
-      padding: 6px 16px 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.9rem;
-      color: #e5e7eb;
-      font-style: italic;
-      font-weight: 600;
-    }
-
-    .app-win .main-card {
-      background: radial-gradient(circle at top, #22c55e22, #022c22);
-      border-color: #22c55e;
-    }
-
-    .app-lose .main-card {
-      background: radial-gradient(circle at top, #f9731622, #111827);
-      border-color: #f97316;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* Overlay de cuenta regresiva grande */
-    #countdownOverlay {
-      position: absolute;
-      left: 50%;
-      bottom: 20%;
-      transform: translateX(-50%);
-      font-size: 4rem;
-      font-weight: 900;
-      color: #ef4444;
-      text-shadow: 0 0 20px rgba(0,0,0,0.8);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    #countdownOverlay.show {
-      animation: countdown-pop 0.6s forwards;
-    }
-
-    @keyframes countdown-pop {
-      0%   { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.9); }
-      20%  { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.1); }
-      80%  { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.9); }
-    }
-
-    @media (max-width: 480px) {
-      .app {
-        border-radius: 0;
-        min-height: 100vh;
-      }
-      #countdownOverlay {
-        font-size: 3.2rem;
-      }
-    }
-  </style>
+@media(max-width:600px){
+  .timer-display{font-size:3.8rem}
+  .snd-grid{grid-template-columns:repeat(3,1fr)}
+  .t-btn{padding:9px 18px;font-size:.92rem}
+}
+</style>
 </head>
 <body>
-  <div class="app" id="appRoot">
-    <div class="app-inner">
-      <!-- Overlay cuenta regresiva grande -->
-      <div id="countdownOverlay"></div>
 
-      <!-- Barra superior -->
-      <div class="top-bar">
-        <div class="top-left">
-          <div class="top-title">PLANNER · LEXIN</div>
-          <div class="top-subtitle">Trivias y retos para empezar a usar Planner en equipo.</div>
-        </div>
-        <div class="top-right">
-          <button class="theme-toggle-btn" id="themeToggleBtn">
-            <span id="themeIcon">🌙</span>
-            <span id="themeLabel">Oscuro</span>
-          </button>
-          <div class="top-badges">
-            <div class="circle-icon">🎲</div>
-            <div class="status-pill">
-              <span class="icon">✅</span>
-              <span id="progressText">0 / 3</span>
-            </div>
-            <div class="status-pill">
-              <span class="icon">⏱️</span>
-              <span class="timer" id="timerText">00s</span>
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- HEADER -->
+<div class="hdr">
+  <span style="font-size:1.3rem">🎓</span>
+  <span class="hdr-title">Facilitator Board</span>
+  <button class="fs-btn" onclick="toggleFS()">⛶ Fullscreen</button>
+</div>
 
-      <!-- Contenido central -->
-      <div class="content-area">
-        <div class="main-card" id="mainCard">
-          <!-- Pantalla de inicio -->
-          <div id="startScreen">
-            <p class="subtitle">
-              Toca el botón <strong>A JUGAR</strong> para iniciar una ronda de
-              <strong>3 participaciones</strong> con preguntas y retos sobre Planner.
-              Usa los comodines como en Preguntados.
-            </p>
-            <!-- El botón ahora es rectangular y está abajo (posición absoluta) -->
-            <div class="center-container">
-              <button class="start-rect-btn" id="startButton">
-                A JUGAR
-              </button>
-            </div>
-          </div>
+<!-- TIMER -->
+<div class="timer-sec">
+  <div class="timer-wrap">
+    <div class="timer-display" id="disp">01:00</div>
+    <div class="over-msg" id="overMsg">⏰ Time is over!</div>
+  </div>
 
-          <!-- Pantalla de juego -->
-          <div id="gameScreen" class="hidden">
-            <div id="itemArea">
-              <div class="category-label" id="typeLabel">Pregunta</div>
-
-              <div class="question-header">
-                <div class="question-number" id="questionNumberText">
-                  Pregunta / Reto
-                </div>
-                <div class="streak-pill" id="streakText">
-                  Racha: 0 ✅
-                </div>
-              </div>
-
-              <div class="question-text" id="questionText"></div>
-
-              <!-- Opciones para preguntas -->
-              <div class="options" id="optionsContainer"></div>
-
-              <!-- Acciones para retos -->
-              <div class="center-container" id="challengeActions">
-                <button id="challengeDoneBtn" class="primary-btn hidden">
-                  Listo, lo hice
-                </button>
-              </div>
-            </div>
-
-            <!-- Feedback / explicación -->
-            <div id="feedbackArea" class="hidden">
-              <div class="feedback-title" id="feedbackTitle"></div>
-              <p class="feedback-body" id="feedbackBody"></p>
-              <div class="center-container" style="margin-top: 16px;">
-                <button class="primary-btn" id="nextItemBtn" disabled>
-                  Siguiente (5)
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pantalla final -->
-          <div id="resultScreen" class="hidden">
-            <div class="result-text" id="resultText"></div>
-            <p class="subtitle-small" id="resultSubtitle"></p>
-            <div class="center-container" style="margin-top: 18px; gap: 8px;">
-              <button class="secondary-btn" id="backHomeBtn">Volver al inicio</button>
-              <button class="primary-btn" id="retryBtn">Otro intento</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Barra de comodines -->
-        <div class="lifeline-bar" id="lifelineBar">
-          <button class="lifeline-btn" id="skipBtn">
-            <span class="icon">🔁</span>
-            <span>Cambiar</span>
-          </button>
-          <button class="lifeline-btn" id="phoneBtn">
-            <span class="icon">📞</span>
-            <span>Llamar a un amigo</span>
-          </button>
-          <button class="lifeline-btn" id="fiftyBtn">
-            <span class="icon">➖➖</span>
-            <span>50/50</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Pie de página -->
-      <div class="bottom-footer">
-        Lexin · Planner Power Mode
-      </div>
+  <div class="timer-controls">
+    <div class="presets" id="presets">
+      <button class="pst-btn" onclick="setPreset(30,this)">30s</button>
+      <button class="pst-btn active-preset" onclick="setPreset(60,this)">1 min</button>
+      <button class="pst-btn" onclick="setPreset(120,this)">2 min</button>
+      <button class="pst-btn" onclick="setPreset(300,this)">5 min</button>
+      <button class="pst-btn" onclick="setPreset(600,this)">10 min</button>
+    </div>
+    <div class="input-wrap">
+      <input class="min-inp" type="number" id="secInput" placeholder="sec" min="1" max="9999">
+      <button class="set-btn" onclick="setCustom()">Set</button>
     </div>
   </div>
 
-  <script>
-    // ===============================
-    // AUDIO simple (beeps)
-    // ===============================
-    let audioCtx = null;
-    function getAudioCtx() {
-      if (!audioCtx) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) audioCtx = new AudioContext();
-      }
-      return audioCtx;
+  <div class="t-actions">
+    <button class="t-btn btn-start" id="startBtn" onclick="startTimer()">▶ Start</button>
+    <button class="t-btn btn-pause" id="pauseBtn" onclick="pauseTimer()" style="display:none">⏸ Pause</button>
+    <button class="t-btn btn-reset" onclick="resetTimer()">↺ Reset</button>
+  </div>
+
+  <div class="prog-bar-wrap">
+    <div class="prog-bar" id="prog" style="width:100%"></div>
+  </div>
+</div>
+
+<!-- SOUNDBOARD -->
+<div class="snd-sec">
+  <div class="snd-heading">🎵 Sound Effects — click anytime</div>
+  <div class="snd-grid" id="grid"></div>
+</div>
+
+<script>
+// ── AUDIO CONTEXT ─────────────────────────────────────────
+let ac=null;
+function getAC(){
+  if(!ac) ac=new(window.AudioContext||window.webkitAudioContext)();
+  if(ac.state==='suspended') ac.resume();
+  return ac;
+}
+
+// ── SOUND FUNCTIONS ───────────────────────────────────────
+function airHorn(){
+  const c=getAC(),o=c.createOscillator(),g=c.createGain(),w=c.createWaveShaper();
+  const cv=new Float32Array(256);
+  for(let i=0;i<256;i++){const x=(i*2/256)-1;cv[i]=(Math.PI+300)*x/(Math.PI+300*Math.abs(x));}
+  w.curve=cv; o.type='sawtooth';
+  o.frequency.setValueAtTime(380,c.currentTime);
+  o.frequency.exponentialRampToValueAtTime(180,c.currentTime+1.6);
+  g.gain.setValueAtTime(.85,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+1.6);
+  o.connect(w);w.connect(g);g.connect(c.destination);
+  o.start();o.stop(c.currentTime+1.7);
+}
+
+function fanfare(){
+  const c=getAC();
+  [523,659,784,1047,1319].forEach((f,i)=>{
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sawtooth'; o.frequency.value=f;
+    const t=c.currentTime+i*.18;
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(.38,t+.04);
+    g.gain.exponentialRampToValueAtTime(.001,t+.32);
+    o.connect(g);g.connect(c.destination);
+    o.start(t);o.stop(t+.35);
+  });
+}
+
+function bell(){
+  const c=getAC();
+  [[880,.5],[1760,.2],[2640,.08],[3520,.04]].forEach(([f,v])=>{
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sine'; o.frequency.value=f;
+    g.gain.setValueAtTime(v,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+3);
+    o.connect(g);g.connect(c.destination);
+    o.start();o.stop(c.currentTime+3.1);
+  });
+}
+
+function whistle(){
+  const c=getAC(),o=c.createOscillator(),g=c.createGain();
+  o.type='sine';
+  o.frequency.setValueAtTime(1600,c.currentTime);
+  o.frequency.linearRampToValueAtTime(2300,c.currentTime+.08);
+  o.frequency.linearRampToValueAtTime(1700,c.currentTime+.6);
+  g.gain.setValueAtTime(.5,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.7);
+  o.connect(g);g.connect(c.destination);
+  o.start();o.stop(c.currentTime+.75);
+}
+
+function laugh(){
+  const c=getAC();
+  for(let i=0;i<6;i++){
+    const o=c.createOscillator(),g=c.createGain();
+    const lfo=c.createOscillator(),lg=c.createGain();
+    o.type='sine'; o.frequency.value=280+i*25;
+    lfo.frequency.value=9; lg.gain.value=70;
+    lfo.connect(lg);lg.connect(o.frequency);
+    const t=c.currentTime+i*.2;
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(.42,t+.04);
+    g.gain.exponentialRampToValueAtTime(.001,t+.18);
+    o.connect(g);g.connect(c.destination);
+    lfo.start(t);o.start(t);o.stop(t+.22);lfo.stop(t+.22);
+  }
+}
+
+function applause(){
+  const c=getAC();
+  const sz=c.sampleRate*2,buf=c.createBuffer(1,sz,c.sampleRate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<sz;i++){
+    const env=i<sz*.08?i/(sz*.08):i>sz*.75?(sz-i)/(sz*.25):1;
+    d[i]=(Math.random()*2-1)*env;
+  }
+  const src=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();
+  f.type='bandpass';f.frequency.value=1300;f.Q.value=.4;
+  src.buffer=buf;
+  g.gain.setValueAtTime(.65,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+2.2);
+  src.connect(f);f.connect(g);g.connect(c.destination);src.start();
+}
+
+function duck(){
+  const c=getAC();
+  [0,.38].forEach(off=>{
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sawtooth';
+    const t=c.currentTime+off;
+    o.frequency.setValueAtTime(450,t);
+    o.frequency.exponentialRampToValueAtTime(200,t+.22);
+    g.gain.setValueAtTime(.55,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+.26);
+    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.3);
+  });
+}
+
+function chicken(){
+  const c=getAC();
+  [850,620,950,500,780,430].forEach((f,i)=>{
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='square'; const t=c.currentTime+i*.09;
+    o.frequency.setValueAtTime(f,t);
+    o.frequency.linearRampToValueAtTime(f*.65,t+.07);
+    g.gain.setValueAtTime(.28,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+.08);
+    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.1);
+  });
+}
+
+function monkey(){
+  const c=getAC();
+  const o=c.createOscillator(),g=c.createGain();
+  const lfo=c.createOscillator(),lg=c.createGain();
+  o.type='sine'; o.frequency.value=480;
+  lfo.frequency.value=5.5; lg.gain.value=220;
+  lfo.connect(lg);lg.connect(o.frequency);
+  [0,.18,.36].forEach(t=>{
+    g.gain.setValueAtTime(.55,c.currentTime+t);
+    g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+.16);
+  });
+  lfo.start();o.connect(g);g.connect(c.destination);
+  o.start();o.stop(c.currentTime+.75);lfo.stop(c.currentTime+.75);
+}
+
+function success(){
+  const c=getAC();
+  [523,659,784,1047,1319].forEach((f,i)=>{
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sine'; o.frequency.value=f;
+    const t=c.currentTime+i*.1;
+    g.gain.setValueAtTime(.42,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+.35);
+    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.4);
+  });
+}
+
+function buzzer(){
+  const c=getAC(),o=c.createOscillator(),g=c.createGain();
+  o.type='sawtooth';
+  o.frequency.setValueAtTime(220,c.currentTime);
+  o.frequency.linearRampToValueAtTime(70,c.currentTime+.65);
+  g.gain.setValueAtTime(.75,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.65);
+  o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.7);
+}
+
+function beep(){
+  const c=getAC();
+  [0,.22].forEach(off=>{
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sine'; o.frequency.value=1050;
+    const t=c.currentTime+off;
+    g.gain.setValueAtTime(.42,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+.16);
+    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.2);
+  });
+}
+
+function timerEndSound(){
+  const c=getAC();
+  [0,.28,.56].forEach(off=>{
+    const o=c.createOscillator(),g=c.createGain();
+    o.type='sine'; o.frequency.value=900;
+    const t=c.currentTime+off;
+    g.gain.setValueAtTime(.55,t);
+    g.gain.exponentialRampToValueAtTime(.001,t+.22);
+    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.28);
+  });
+}
+
+// ── SOUND BUTTONS ─────────────────────────────────────────
+const SOUNDS=[
+  {l:'Air Horn',   i:'📢',fn:airHorn},
+  {l:'Fanfare',    i:'🎺',fn:fanfare},
+  {l:'Bell',       i:'🔔',fn:bell},
+  {l:'Whistle',    i:'🎵',fn:whistle},
+  {l:'Ha Ha Ha',   i:'😂',fn:laugh},
+  {l:'Applause',   i:'👏',fn:applause},
+  {l:'Duck',       i:'🦆',fn:duck},
+  {l:'Chicken',    i:'🐔',fn:chicken},
+  {l:'Monkey',     i:'🐒',fn:monkey},
+  {l:'Success!',   i:'🏆',fn:success},
+  {l:'Buzzer',     i:'❌',fn:buzzer},
+  {l:'Beep',       i:'🔔',fn:beep},
+];
+
+const grid=document.getElementById('grid');
+SOUNDS.forEach(({l,i,fn},idx)=>{
+  const btn=document.createElement('button');
+  btn.className=`snd-btn c${idx}`;
+  btn.innerHTML=`<span class="snd-icon">${i}</span><span class="snd-label">${l}</span>`;
+
+  let cd=false;
+  btn.addEventListener('click',e=>{
+    if(cd)return; cd=true; setTimeout(()=>cd=false,300);
+    fn();
+    btn.classList.remove('flash');
+    void btn.offsetWidth;
+    btn.classList.add('flash');
+    // ripple
+    const r=document.createElement('span');
+    r.className='ripple';
+    const rc=btn.getBoundingClientRect();
+    const sz=Math.max(rc.width,rc.height);
+    r.style.cssText=`width:${sz}px;height:${sz}px;left:${e.clientX-rc.left-sz/2}px;top:${e.clientY-rc.top-sz/2}px`;
+    btn.appendChild(r);
+    setTimeout(()=>r.remove(),600);
+  });
+  grid.appendChild(btn);
+});
+
+// ── TIMER ─────────────────────────────────────────────────
+let total=60,remain=60,iv=null,running=false;
+const disp=document.getElementById('disp');
+const overMsg=document.getElementById('overMsg');
+const startBtn=document.getElementById('startBtn');
+const pauseBtn=document.getElementById('pauseBtn');
+const prog=document.getElementById('prog');
+
+function fmt(s){return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+
+function refresh(){
+  disp.textContent=fmt(remain);
+  disp.className='timer-display';
+  prog.className='prog-bar';
+  if(remain<=0){disp.classList.add('done');}
+  else if(remain<=10){disp.classList.add('danger');prog.classList.add('danger');}
+  else if(remain<=30){disp.classList.add('warn');prog.classList.add('warn');}
+  const pct=total>0?(remain/total)*100:0;
+  prog.style.width=pct+'%';
+}
+
+function clearActive(){
+  document.querySelectorAll('.pst-btn').forEach(b=>b.classList.remove('active-preset'));
+}
+
+function setPreset(s,el){
+  if(running)return;
+  total=s;remain=s;
+  clearActive();if(el)el.classList.add('active-preset');
+  overMsg.style.display='none';
+  refresh();
+}
+
+function setCustom(){
+  if(running)return;
+  const v=parseInt(document.getElementById('secInput').value);
+  if(v>0){total=v;remain=v;clearActive();overMsg.style.display='none';refresh();}
+}
+
+function startTimer(){
+  if(running||remain<=0)return;
+  running=true;startBtn.style.display='none';pauseBtn.style.display='flex';
+  iv=setInterval(()=>{
+    remain--;refresh();
+    if(remain<=0){
+      clearInterval(iv);running=false;
+      disp.classList.add('done');
+      overMsg.style.display='block';
+      startBtn.style.display='flex';pauseBtn.style.display='none';
+      timerEndSound();
     }
-
-    function playBeep(freq = 880, duration = 120, volume = 0.25) {
-      const ctx = getAudioCtx();
-      if (!ctx) return;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = "sine";
-      osc.frequency.value = freq;
-      gain.gain.value = volume;
-      const now = ctx.currentTime;
-      osc.start(now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + duration / 1000);
-      osc.stop(now + duration / 1000);
-    }
-
-    function playWinSound() {
-      setTimeout(() => playBeep(880, 140, 0.3), 0);
-      setTimeout(() => playBeep(1200, 160, 0.25), 160);
-      setTimeout(() => playBeep(1500, 200, 0.2), 340);
-    }
-
-    function playLoseSound() {
-      setTimeout(() => playBeep(440, 200, 0.3), 0);
-      setTimeout(() => playBeep(330, 220, 0.25), 220);
-    }
-
-    // ===============================
-    // Banco de preguntas y retos (ejemplos)
-    // Para llegar a 100 preguntas y 50 retos:
-    // copia y pega más objetos siguiendo este mismo formato.
-    // ===============================
-    const questions = [
-      {
-        type: "question",
-        text: "¿Qué es Microsoft Planner dentro de Office 365?",
-        options: [
-          "Un lector de correo electrónico",
-          "Una herramienta para gestionar tareas y tableros de trabajo",
-          "Un programa para hacer videollamadas",
-          "Un reemplazo completo de Excel"
-        ],
-        correctIndex: 1,
-        explanation:
-          "Microsoft Planner es una herramienta de planificación visual para organizar tareas, proyectos y tableros de trabajo en equipo dentro de Office 365."
-      },
-      {
-        type: "question",
-        text: "¿Qué necesita una persona para poder usar Planner en la organización?",
-        options: [
-          "Tener una cuenta institucional/Office 365 activa",
-          "Tener cuenta personal de Gmail",
-          "Instalar una app de pago en el celular",
-          "Tener permisos de administrador de TI"
-        ],
-        correctIndex: 0,
-        explanation:
-          "Para usar Planner se necesita una cuenta institucional/Office 365 con licencia activa y acceso al entorno de la organización."
-      },
-      {
-        type: "question",
-        text: "¿Cómo se accede a Planner desde el navegador?",
-        options: [
-          "Entrando a YouTube y buscando Planner",
-          "Entrando a office.com, iniciando sesión y seleccionando Planner en el lanzador de aplicaciones",
-          "Descargando Planner desde una página no oficial",
-          "No se puede usar en navegador, solo como app móvil"
-        ],
-        correctIndex: 1,
-        explanation:
-          "La forma recomendada es entrar a office.com, iniciar sesión con la cuenta institucional, abrir el lanzador de aplicaciones y seleccionar Planner."
-      },
-      {
-        type: "question",
-        text: "En Planner, ¿qué es un “plan”?",
-        options: [
-          "Un chat entre dos personas",
-          "Un tablero donde se agrupan tareas relacionadas a un objetivo o proyecto",
-          "Un archivo de Word compartido",
-          "Un grupo de correos electrónicos"
-        ],
-        correctIndex: 1,
-        explanation:
-          "Un plan es un tablero de trabajo donde se agrupan tareas relacionadas a un objetivo o proyecto específico."
-      },
-      {
-        type: "question",
-        text: "En Planner, ¿qué es un “bucket” (cubeta)?",
-        options: [
-          "Un tipo de archivo especial",
-          "Una etiqueta de prioridad",
-          "Una columna que agrupa tareas por fases o temas",
-          "Un chat general para el equipo"
-        ],
-        correctIndex: 2,
-        explanation:
-          "Un bucket es una columna dentro del plan que permite agrupar tareas por fases, temas o categorías (por ejemplo: Pendiente, En proceso, Finalizado)."
-      },
-      {
-        type: "question",
-        text: "¿Cuál es una ventaja de usar Planner para el equipo Lexin?",
-        options: [
-          "Cada persona trabaja aislada y sin ver las tareas de los demás",
-          "Permite visualizar el trabajo del equipo, asignar responsables y fechas límite",
-          "Solo sirve para registrar problemas técnicos",
-          "Reemplaza todas las reuniones del equipo"
-        ],
-        correctIndex: 1,
-        explanation:
-          "Planner ayuda a Lexin a visualizar el trabajo del equipo, asignar responsables, fechas límite y hacer seguimiento de forma clara."
-      },
-      {
-        type: "question",
-        text: "¿Qué elemento se usa en Planner para ver quién es responsable de una tarea?",
-        options: [
-          "El color del bucket",
-          "El adjunto de la tarea",
-          "El campo de “miembros/asignados”",
-          "El título del plan"
-        ],
-        correctIndex: 2,
-        explanation:
-          "En Planner se asignan tareas a uno o varios miembros del plan desde el campo de “asignados” o “miembros responsables”."
-      },
-      {
-        type: "question",
-        text: "Si una tarea ya fue terminada, ¿qué deberíamos hacer en Planner?",
-        options: [
-          "Eliminarla para que no se vea",
-          "Marcarla como completada para que quede el registro",
-          "Cambiarle el título por la palabra LISTO",
-          "Moverla al primer bucket aunque no esté terminada"
-        ],
-        correctIndex: 1,
-        explanation:
-          "Lo ideal es marcar la tarea como completada, para que quede el registro histórico de que se realizó."
-      },
-      {
-        type: "question",
-        text: "¿Por qué es importante escribir buenas descripciones en las tareas de Planner?",
-        options: [
-          "Para que la tarjeta sea más grande",
-          "Para que solo el creador entienda la tarea",
-          "Para que cualquier miembro del equipo entienda claramente qué hay que hacer",
-          "No es importante, la descripción es opcional"
-        ],
-        correctIndex: 2,
-        explanation:
-          "Una buena descripción ayuda a que cualquier persona del equipo entienda el alcance, pasos y detalles de la tarea."
-      },
-      {
-        type: "question",
-        text: "Si Lexin quiere usar Planner para sus proyectos, ¿qué beneficio obtiene?",
-        options: [
-          "Menos visibilidad del trabajo",
-          "Mejor organización, seguimiento y claridad de quién hace qué y para cuándo",
-          "Más correos y más confusión",
-          "Solo sirve para guardar archivos"
-        ],
-        correctIndex: 1,
-        explanation:
-          "Planner permite a Lexin organizar proyectos, ver responsables, fechas, avances y así reducir la confusión en el trabajo diario."
-      },
-      {
-        type: "question",
-        text: "¿Qué tipo de información es recomendable colocar en el título de una tarea?",
-        options: [
-          "Un chiste interno del equipo",
-          "Un texto corto y claro que resuma la acción principal",
-          "La fecha de nacimiento del responsable",
-          "Solo un número sin contexto"
-        ],
-        correctIndex: 1,
-        explanation:
-          "El título debe ser corto y claro, resumiendo la acción principal, por ejemplo: “Diseñar plantilla de reporte de Lexin en Planner”."
-      },
-      {
-        type: "question",
-        text: "¿Qué representa la vista de “Gráficos” (Charts) en Planner?",
-        options: [
-          "Un chat del equipo",
-          "Estadísticas del plan: tareas completadas, en curso, retrasadas, etc.",
-          "Una lista de correos enviados",
-          "Un calendario externo"
-        ],
-        correctIndex: 1,
-        explanation:
-          "La vista de gráficos muestra estadísticas y visualizaciones de las tareas por estado, miembro, prioridad, etc."
-      },
-      {
-        type: "question",
-        text: "En Planner, ¿qué permite la fecha de vencimiento de una tarea?",
-        options: [
-          "Enviar la tarea a otra organización",
-          "Definir hasta cuándo debería estar terminada y mejorar el seguimiento",
-          "Bloquear la tarea automáticamente",
-          "Borrar la tarea al llegar la fecha"
-        ],
-        correctIndex: 1,
-        explanation:
-          "La fecha de vencimiento ayuda a fijar un límite de tiempo para completar la tarea y mejorar el seguimiento del plan."
-      },
-      {
-        type: "question",
-        text: "¿Cómo se relaciona Planner con Teams?",
-        options: [
-          "No se pueden usar juntos",
-          "Se puede agregar un plan de Planner como pestaña dentro de un canal de Teams",
-          "Teams borra los planes de Planner",
-          "Solo sirve para chats privados"
-        ],
-        correctIndex: 1,
-        explanation:
-          "Planner se integra con Teams, permitiendo agregar un plan como pestaña dentro de un canal para que el equipo lo use directamente."
-      },
-      {
-        type: "question",
-        text: "¿Por qué Lexin quiere implementar Planner?",
-        options: [
-          "Porque está de moda tener muchas apps",
-          "Para tener un espacio visual donde organizar tareas, proyectos y responsabilidades del equipo",
-          "Para reemplazar todos los documentos",
-          "Para no volver a reunirse nunca más"
-        ],
-        correctIndex: 1,
-        explanation:
-          "Lexin busca en Planner un espacio visual y compartido para organizar tareas y proyectos, asignar responsables y hacer seguimiento."
-      }
-      // 👉 A partir de aquí puedes agregar más preguntas hasta llegar a 100.
-    ];
-
-    const challenges = [
-      {
-        type: "challenge",
-        text:
-          "Reto: Explica en voz alta, en menos de 30 segundos, qué es Planner y para qué lo está usando Lexin.",
-        guide:
-          "Respuesta sugerida: Planner es una herramienta de Office 365 para organizar tareas y proyectos. Lexin la usa para visualizar el trabajo del equipo, asignar responsables y hacer seguimiento de sus actividades."
-      },
-      {
-        type: "challenge",
-        text:
-          "Reto: Desde tu computador, entra a office.com e indica paso a paso cómo encontrar la aplicación Planner.",
-        guide:
-          "Guía sugerida: 1) Abre office.com. 2) Inicia sesión con tu cuenta institucional. 3) Haz clic en el lanzador de aplicaciones. 4) Busca y selecciona 'Planner'."
-      },
-      {
-        type: "challenge",
-        text:
-          "Reto: Piensa en un proyecto real del equipo Lexin y di en voz alta cómo lo organizarías en buckets dentro de Planner.",
-        guide:
-          "Ejemplo: Crear buckets como 'Ideas', 'En planeación', 'En ejecución' y 'Finalizado' para visualizar el avance del proyecto."
-      },
-      {
-        type: "challenge",
-        text:
-          "Reto: Menciona en voz alta al menos tres datos que puedes configurar dentro de una tarea de Planner.",
-        guide:
-          "Respuesta sugerida: título, descripción, fecha de vencimiento, asignados, checklist, etiquetas, adjuntos y comentarios."
-      },
-      {
-        type: "challenge",
-        text:
-          "Reto: Di en voz alta por qué usar Planner puede reducir la cantidad de correos internos en el equipo Lexin.",
-        guide:
-          "Explicación: Planner centraliza las tareas y comentarios en un mismo lugar, en lugar de dispersar la información en muchos correos."
-      },
-      {
-        type: "challenge",
-        text:
-          "Reto: Imagina que debes enseñar Planner a un nuevo miembro de Lexin. Resume en 30 segundos cómo le explicarías el plan principal del equipo.",
-        guide:
-          "Ejemplo: 'Este es nuestro plan en Planner: vemos buckets con las fases del trabajo, tareas con responsables y fechas, y usamos colores para los tipos de actividad'."
-      }
-      // 👉 Agrega más retos similares hasta llegar a 50.
-    ];
-
-    // ===============================
-    // Estado del juego
-    // ===============================
-    const baseTimes = {
-      question: 20,  // preguntas: 20s
-      challenge: 30, // retos: 30s
-      phone: 30
-    };
-
-    const maxPerRound = 3;
-    let currentItem = null;
-    let currentType = null;
-    let roundCount = 0;
-    let successCount = 0;
-    let timerId = null;
-    let timeLeft = 0;
-    let currentTimeoutCallback = null;
-
-    let pendingWasSuccess = false;
-    let feedbackTimerId = null;
-    let feedbackSeconds = 5;
-
-    let lifelines = {
-      skip: true,
-      phone: true,
-      fifty: true
-    };
-
-    let lastCountdownShown = null;
-
-    // ===============================
-    // Elementos DOM
-    // ===============================
-    const appRoot = document.getElementById("appRoot");
-    const countdownOverlay = document.getElementById("countdownOverlay");
-
-    const startScreen = document.getElementById("startScreen");
-    const gameScreen = document.getElementById("gameScreen");
-    const resultScreen = document.getElementById("resultScreen");
-    const itemArea = document.getElementById("itemArea");
-    const feedbackArea = document.getElementById("feedbackArea");
-
-    const startButton = document.getElementById("startButton");
-    const progressText = document.getElementById("progressText");
-    const timerText = document.getElementById("timerText");
-    const typeLabel = document.getElementById("typeLabel");
-    const questionNumberText = document.getElementById("questionNumberText");
-    const streakText = document.getElementById("streakText");
-    const questionText = document.getElementById("questionText");
-    const optionsContainer = document.getElementById("optionsContainer");
-    const challengeActions = document.getElementById("challengeActions");
-    const challengeDoneBtn = document.getElementById("challengeDoneBtn");
-
-    const feedbackTitle = document.getElementById("feedbackTitle");
-    const feedbackBody = document.getElementById("feedbackBody");
-    const nextItemBtn = document.getElementById("nextItemBtn");
-
-    const resultText = document.getElementById("resultText");
-    const resultSubtitle = document.getElementById("resultSubtitle");
-    const retryBtn = document.getElementById("retryBtn");
-    const backHomeBtn = document.getElementById("backHomeBtn");
-
-    const skipBtn = document.getElementById("skipBtn");
-    const phoneBtn = document.getElementById("phoneBtn");
-    const fiftyBtn = document.getElementById("fiftyBtn");
-
-    const themeToggleBtn = document.getElementById("themeToggleBtn");
-    const themeIcon = document.getElementById("themeIcon");
-    const themeLabel = document.getElementById("themeLabel");
-
-    // ===============================
-    // Tema claro / oscuro
-    // ===============================
-    let currentTheme = "dark";
-    function updateThemeVisuals() {
-      if (currentTheme === "dark") {
-        document.body.classList.remove("light-theme");
-        themeIcon.textContent = "🌙";
-        themeLabel.textContent = "Oscuro";
-      } else {
-        document.body.classList.add("light-theme");
-        themeIcon.textContent = "☀️";
-        themeLabel.textContent = "Claro";
-      }
-    }
-
-    themeToggleBtn.addEventListener("click", () => {
-      currentTheme = currentTheme === "dark" ? "light" : "dark";
-      updateThemeVisuals();
-    });
-
-    updateThemeVisuals();
-
-    // ===============================
-    // Navegación
-    // ===============================
-    function showStartScreen() {
-      stopTimer();
-      stopFeedbackTimer();
-      roundCount = 0;
-      successCount = 0;
-      updateProgress();
-      timerText.textContent = "00s";
-      timerText.classList.remove("timer-warning");
-      appRoot.classList.remove("app-win", "app-lose");
-
-      startScreen.classList.remove("hidden");
-      gameScreen.classList.add("hidden");
-      resultScreen.classList.add("hidden");
-    }
-
-    function showGameScreen() {
-      startScreen.classList.add("hidden");
-      gameScreen.classList.remove("hidden");
-      resultScreen.classList.add("hidden");
-      itemArea.classList.remove("hidden");
-      feedbackArea.classList.add("hidden");
-    }
-
-    function showResultScreen(won) {
-      stopTimer();
-      stopFeedbackTimer();
-      startScreen.classList.add("hidden");
-      gameScreen.classList.add("hidden");
-      resultScreen.classList.remove("hidden");
-
-      if (won) {
-        appRoot.classList.add("app-win");
-        appRoot.classList.remove("app-lose");
-        resultText.innerHTML = "<span class='win-bounce'>¡GANASTE!</span>";
-        resultSubtitle.textContent =
-          "Completaste 3 participaciones exitosas. Lexin se está volviendo pro en Planner.";
-        playWinSound();
-      } else {
-        appRoot.classList.add("app-lose");
-        appRoot.classList.remove("app-win");
-        resultText.textContent = "Estás casi a ser un pro en Planner";
-        resultSubtitle.textContent =
-          "Sigue practicando. Cada intento con esta Lotería Planner te ayuda a dominar la herramienta.";
-        playLoseSound();
-      }
-    }
-
-    function updateProgress() {
-      progressText.textContent = `${roundCount} / ${maxPerRound}`;
-      streakText.textContent = `Racha: ${successCount} ✅`;
-    }
-
-    // ===============================
-    // Juego
-    // ===============================
-    function randomFromArray(arr) {
-      const i = Math.floor(Math.random() * arr.length);
-      return arr[i];
-    }
-
-    function pickRandomItem(type) {
-      if (type === "question") return randomFromArray(questions);
-      if (type === "challenge") return randomFromArray(challenges);
-
-      const chooseQuestion = Math.random() < 0.5;
-      if (chooseQuestion && questions.length > 0) {
-        return randomFromArray(questions);
-      } else if (!chooseQuestion && challenges.length > 0) {
-        return randomFromArray(challenges);
-      } else if (questions.length > 0) {
-        return randomFromArray(questions);
-      } else {
-        return randomFromArray(challenges);
-      }
-    }
-
-    function resetLifelines() {
-      lifelines = { skip: true, phone: true, fifty: true };
-      updateLifelineButtons();
-    }
-
-    function updateLifelineButtons() {
-      skipBtn.disabled = !lifelines.skip;
-      phoneBtn.disabled = !lifelines.phone;
-      fiftyBtn.disabled = !lifelines.fifty || currentType !== "question";
-      fiftyBtn.style.opacity = currentType === "question" ? "1" : "0.25";
-    }
-
-    function startGame() {
-      roundCount = 0;
-      successCount = 0;
-      updateProgress();
-      appRoot.classList.remove("app-win", "app-lose");
-      resetLifelines();
-      loadNewItem();
-    }
-
-    function loadNewItem(forceType = null) {
-      stopTimer();
-      stopFeedbackTimer();
-      currentItem = pickRandomItem(forceType);
-      currentType = currentItem.type;
-      pendingWasSuccess = false;
-      lastCountdownShown = null;
-      renderCurrentItem();
-    }
-
-    function renderCurrentItem() {
-      showGameScreen();
-      clearOptions();
-      itemArea.classList.remove("hidden");
-      feedbackArea.classList.add("hidden");
-
-      questionNumberText.textContent = `Participación ${roundCount + 1} de ${maxPerRound}`;
-      typeLabel.textContent = currentType === "question" ? "Pregunta" : "Reto";
-
-      questionText.textContent = currentItem.text;
-      updateLifelineButtons();
-
-      if (currentType === "question") {
-        optionsContainer.classList.remove("hidden");
-        challengeDoneBtn.classList.add("hidden");
-
-        currentItem.options.forEach((opt, index) => {
-          const btn = document.createElement("button");
-          btn.className = "option-btn";
-          btn.innerHTML = `<span><span class="index">${String.fromCharCode(
-            65 + index
-          )}.</span> ${opt}</span>`;
-          btn.addEventListener("click", () => handleAnswer(index));
-          optionsContainer.appendChild(btn);
-        });
-
-        startTimer(baseTimes.question, () => {
-          pendingWasSuccess = false;
-          showFeedback(false, true);
-        });
-      } else {
-        optionsContainer.classList.add("hidden");
-        challengeDoneBtn.classList.remove("hidden");
-
-        challengeDoneBtn.onclick = () => {
-          pendingWasSuccess = true;
-          showFeedback(true, false);
-        };
-
-        startTimer(baseTimes.challenge, () => {
-          pendingWasSuccess = false;
-          showFeedback(false, true);
-        });
-      }
-    }
-
-    function clearOptions() {
-      optionsContainer.innerHTML = "";
-    }
-
-    function handleAnswer(selectedIndex) {
-      if (!currentItem || currentType !== "question") return;
-
-      const correctIndex = currentItem.correctIndex;
-      const buttons = Array.from(
-        optionsContainer.querySelectorAll(".option-btn")
-      );
-
-      buttons.forEach((btn, i) => {
-        if (i === correctIndex) btn.classList.add("correct");
-        if (i === selectedIndex && selectedIndex !== correctIndex) {
-          btn.classList.add("wrong");
-        }
-        btn.disabled = true;
-      });
-
-      stopTimer();
-
-      if (selectedIndex === correctIndex) {
-        pendingWasSuccess = true;
-        showFeedback(true, false);
-      } else {
-        pendingWasSuccess = false;
-        showFeedback(false, false);
-      }
-    }
-
-    function showFeedback(isSuccess, byTimeout) {
-      stopTimer();
-      itemArea.classList.add("hidden");
-      feedbackArea.classList.remove("hidden");
-
-      let title = "";
-      let body = "";
-
-      if (currentType === "question") {
-        const correctText = currentItem.options[currentItem.correctIndex];
-
-        if (isSuccess) {
-          title = "✅ ¡Respuesta correcta!";
-          body =
-            "La respuesta correcta es: <strong>" +
-            correctText +
-            "</strong>. " +
-            (currentItem.explanation || "");
-        } else if (byTimeout) {
-          title = "⏱️ Tiempo agotado";
-          body =
-            "Se acabó el tiempo. La respuesta correcta era: <strong>" +
-            correctText +
-            "</strong>. " +
-            (currentItem.explanation || "");
-        } else {
-          title = "❌ Respuesta incorrecta";
-          body =
-            "La respuesta correcta es: <strong>" +
-            correctText +
-            "</strong>. " +
-            (currentItem.explanation || "");
-        }
-      } else {
-        if (isSuccess) {
-          title = "💪 ¡Reto completado!";
-          body =
-            (currentItem.guide
-              ? "Esta es una forma sugerida de hacerlo: "
-              : "") + (currentItem.guide || "");
-        } else if (byTimeout) {
-          title = "⏱️ Reto no completado a tiempo";
-          body =
-            "No pasa nada, aquí tienes una guía para hacerlo la próxima vez: " +
-            (currentItem.guide || "");
-        } else {
-          title = "Reto no completado";
-          body =
-            "Aquí tienes una guía para la próxima vez: " +
-            (currentItem.guide || "");
-        }
-      }
-
-      feedbackTitle.innerHTML = title;
-      feedbackBody.innerHTML = body;
-
-      nextItemBtn.disabled = true;
-      feedbackSeconds = 5;
-      nextItemBtn.textContent = `Siguiente (${feedbackSeconds})`;
-      startFeedbackTimer();
-    }
-
-    function applyFeedbackAndContinue() {
-      roundCount++;
-      if (pendingWasSuccess) successCount++;
-      updateProgress();
-
-      if (roundCount >= maxPerRound) {
-        const won = successCount >= maxPerRound;
-        showResultScreen(won);
-      } else {
-        loadNewItem();
-      }
-    }
-
-    // ===============================
-    // Timer principal
-    // ===============================
-    function showCountdownNumber(n) {
-      if (lastCountdownShown === n) return;
-      lastCountdownShown = n;
-      countdownOverlay.textContent = n;
-      countdownOverlay.classList.remove("show");
-      void countdownOverlay.offsetWidth; // reinicia animación
-      countdownOverlay.classList.add("show");
-    }
-
-    function startTimer(seconds, onTimeOut) {
-      stopTimer();
-      timeLeft = seconds;
-      currentTimeoutCallback = onTimeOut;
-      timerText.textContent = timeLeft + "s";
-      timerText.classList.remove("timer-warning");
-      lastCountdownShown = null;
-
-      timerId = setInterval(() => {
-        timeLeft--;
-        if (timeLeft < 0) timeLeft = 0;
-        timerText.textContent = timeLeft + "s";
-
-        const threshold = currentType === "question" ? 5 : 7;
-
-        if (timeLeft > 0 && timeLeft <= threshold) {
-          timerText.classList.add("timer-warning");
-          playBeep(900, 110, 0.22);
-          showCountdownNumber(timeLeft);
-        }
-
-        if (timeLeft <= 0) {
-          stopTimer();
-          timerText.classList.remove("timer-warning");
-          if (typeof currentTimeoutCallback === "function") {
-            currentTimeoutCallback();
-          }
-        }
-      }, 1000);
-    }
-
-    function stopTimer() {
-      if (timerId) {
-        clearInterval(timerId);
-        timerId = null;
-      }
-    }
-
-    // ===============================
-    // Timer de feedback (5 s)
-    // ===============================
-    function startFeedbackTimer() {
-      stopFeedbackTimer();
-      feedbackTimerId = setInterval(() => {
-        feedbackSeconds--;
-        if (feedbackSeconds <= 0) {
-          feedbackSeconds = 0;
-          stopFeedbackTimer();
-          nextItemBtn.disabled = false;
-          nextItemBtn.textContent = "Siguiente";
-        } else {
-          nextItemBtn.textContent = `Siguiente (${feedbackSeconds})`;
-        }
-      }, 1000);
-    }
-
-    function stopFeedbackTimer() {
-      if (feedbackTimerId) {
-        clearInterval(feedbackTimerId);
-        feedbackTimerId = null;
-      }
-    }
-
-    // ===============================
-    // Comodines
-    // ===============================
-    skipBtn.addEventListener("click", () => {
-      if (!lifelines.skip) return;
-      lifelines.skip = false;
-      updateLifelineButtons();
-      loadNewItem(currentType); // mantiene tipo
-    });
-
-    phoneBtn.addEventListener("click", () => {
-      if (!lifelines.phone || !currentTimeoutCallback) return;
-      lifelines.phone = false;
-      updateLifelineButtons();
-      startTimer(baseTimes.phone, currentTimeoutCallback);
-    });
-
-    fiftyBtn.addEventListener("click", () => {
-      if (!lifelines.fifty || currentType !== "question") return;
-      lifelines.fifty = false;
-      updateLifelineButtons();
-
-      const buttons = Array.from(
-        optionsContainer.querySelectorAll(".option-btn")
-      );
-      const correctIndex = currentItem.correctIndex;
-      const incorrect = buttons
-        .map((btn, idx) => ({ btn, idx }))
-        .filter(obj => obj.idx !== correctIndex);
-
-      shuffleArray(incorrect);
-      const toRemove = incorrect.slice(0, 2);
-      toRemove.forEach(obj => {
-        obj.btn.classList.add("eliminated");
-        obj.btn.disabled = true;
-      });
-    });
-
-    function shuffleArray(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-    }
-
-    // ===============================
-    // Eventos generales
-    // ===============================
-    startButton.addEventListener("click", () => {
-      startGame();
-    });
-
-    retryBtn.addEventListener("click", () => {
-      startGame();
-    });
-
-    backHomeBtn.addEventListener("click", () => {
-      showStartScreen();
-    });
-
-    nextItemBtn.addEventListener("click", () => {
-      if (!nextItemBtn.disabled) {
-        applyFeedbackAndContinue();
-      }
-    });
-
-    // Pantalla inicial
-    showStartScreen();
-  </script>
+  },1000);
+}
+
+function pauseTimer(){
+  if(!running)return;
+  clearInterval(iv);running=false;
+  startBtn.style.display='flex';pauseBtn.style.display='none';
+}
+
+function resetTimer(){
+  clearInterval(iv);running=false;remain=total;
+  overMsg.style.display='none';
+  startBtn.style.display='flex';pauseBtn.style.display='none';
+  refresh();
+}
+
+document.getElementById('secInput').addEventListener('keydown',e=>{if(e.key==='Enter')setCustom();});
+
+function toggleFS(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+refresh();
+</script>
 </body>
 </html>
